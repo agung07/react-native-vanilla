@@ -50,13 +50,19 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
     };
   }
   componentDidMount() {
-    this.setState({showLoadingModal: true});
-    getToken((res) => {
-      if(res) {
-        this.props.navigation.navigate('App')
-      }
-      this.setState({showLoadingModal: false});
-    })
+    this.setState(
+      {showLoadingModal: true},
+      () => getToken((res) => {
+        if(res) {
+          this.props.navigation.navigate('App')
+        }
+        this.setState({showLoadingModal: false});
+      })
+      );
+  }
+
+  componentWillUnmount() {
+    this.setState({showLoadingModal: false});
   }
 
   onFormValueChange(value, name): void {

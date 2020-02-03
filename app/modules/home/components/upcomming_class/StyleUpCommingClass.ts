@@ -12,8 +12,8 @@ export default StyleSheet.create({
     padding: 15,
   },
   classInfo: {
-    borderBottomColor: Colors.gray,
-    borderBottomWidth: 0.5,
+    // borderBottomColor: Colors.gray,
+    // borderBottomWidth: 0.5,
     paddingBottom: 10
   },
   headerWrapper: {
@@ -21,18 +21,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  labelWrapper: {
-    height: 35, 
-    minWidth: 35,
-    borderRadius: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 10
-  },
-  label: {
-    color: Colors.white,
-
   },
   duration: {
     flexDirection: 'row',
@@ -71,11 +59,20 @@ export default StyleSheet.create({
     color: Colors.black,
     marginLeft: 5
   },
-  tasksWrapper: {
+  BodyLecturer: {
+    borderTopColor: Colors.gray,
+    borderTopWidth: 0.5,
+    borderBottomColor: Colors.gray,
+    borderBottomWidth: 0.5,
+    paddingVertical: 15
+  },
+  BodyStudent: {
+    borderTopColor: Colors.gray,
+    borderTopWidth: 0.5,
+    paddingVertical: 15,
 
   },
   tasksIconWrapper: {
-    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
 
@@ -98,7 +95,7 @@ export default StyleSheet.create({
   },
   todoWrapper: {
     width: '100%',
-    minHeight: 200,
+    // minHeight: 200,
     borderRadius: 5,
     padding: 15,
     marginTop: 10,

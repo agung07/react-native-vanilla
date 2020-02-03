@@ -2,8 +2,7 @@ import React from 'react';
 import {
   View,
   TouchableOpacity,
-  Text,
-  Image
+  Text
 } from 'react-native';
 import Styles from './StyleButtonNavigationGroup';
 import presentationIcon from '../../assets/images/presentation.png';

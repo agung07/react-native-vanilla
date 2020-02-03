@@ -2,17 +2,16 @@
  * @author: dwi.setiyadi@gmail.com
 */
 
-import { StyleSheet, Dimensions } from 'react-native';
-
-const { width } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
+  linierGradient: {
+    width: '100%', 
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: -80,
-    padding: 16
+    padding: 16 
+  },
+  container: {
+    flexGrow: 1,
   },
   headerWrapper: {
     width: '100%'

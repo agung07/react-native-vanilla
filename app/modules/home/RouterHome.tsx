@@ -1,41 +1,47 @@
-/**
- * @author: dwi.setiyadi@gmail.com
-*/import React from 'react';
-import {
-  View,
-  Image,
-  TouchableWithoutFeedback
-} from 'react-native';
-import Home from './views/index';
-import HomeIconInActive from './../../assets/images/home-gray.png';
-import HomeIconActive from './../../assets/images/home-blue.png';
-import Styles from '../../styles/index';
+import React from 'react';
+import Colors from '../../styles/Colors';
+import LecturerHome from './views/lecturer';
+import StudentHome from './views/student';
+import HomeIcon from '../../assets/images/home';
+import { createStackNavigator } from 'react-navigation-stack';
 
-export default {
-  Home: { 
-    screen: Home.Main,
-    navigationOptions: ({ navigation }) => {
-      const isActive =  navigation.isFocused();
-      let HomeIcon = HomeIconInActive;
-      if(isActive) {
-        HomeIcon = HomeIconActive;
-      }
-      return {
-        tabBarIcon: ({ focused, horizontal, tintColor}) => (
-          <Image
-            source={HomeIcon}
-            style={Styles.Main.navBottomIcon}
-          />
-        )
-      }
-    }
+export const HomeLecturerStackNav = createStackNavigator(
+  {
+    Home:  LecturerHome.Main
   },
-  FormPost: {
-    screen: Home.FormPost,
-    navigationOptions: ({ navigation }) => {
-      return {
-        tabBarVisible: false,
-      }
+  {
+    initialRouteName: 'Home',
+    headerMode: 'none',
+  }
+)
+
+export const HomeStudentStackNav = createStackNavigator(
+  {
+    Home:  StudentHome.Main,
+  },
+  {
+    initialRouteName: 'Home',
+    headerMode: 'none',
+  }
+)
+
+export const HomeNavConfig = {
+  navigationOptions: ({ navigation }) => {
+    const { index } = navigation.state;
+    const isActive =  navigation.isFocused();
+    let istabBarVisible = true;
+
+    if(index && (index > 0)) istabBarVisible = false;
+    
+    return {
+      tabBarVisible: istabBarVisible,
+      tabBarIcon: () => (
+        <HomeIcon 
+          height={25}
+          width={25}
+          color={ isActive ? '#018dd5' : Colors.gray }
+        />
+      )
     }
   }
-};
+}

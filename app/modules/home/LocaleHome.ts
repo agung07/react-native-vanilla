@@ -54,5 +54,13 @@ export default [
   {
     id: 'Kamera',
     en: `Camera`
+  },
+  {
+    id: 'Kegiatan Mahasiswa Pada Minggu Ini',
+    en: 'Student Activities This Week'
+  },
+  {
+    id: 'Mahasiswa',
+    en: 'Student'
   }
 ];

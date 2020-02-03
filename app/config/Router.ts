@@ -2,18 +2,12 @@
  * @author: dwi.setiyadi@gmail.com
 */
 import RouterBinusAuth from '../modules/auth_binus/RouterAuth';
-import RouterHome from '../modules/home/RouterHome';
-import RouterClass from '../modules/courses/RouterClass';
+import { ClassLecturerStackNav, ClassNavConfig, ClassStudentStackNav } from '../modules/courses/RouterClass';
+import { HomeLecturerStackNav, HomeNavConfig, HomeStudentStackNav } from '../modules/home/RouterHome';
 
 const auth = {
   ...RouterBinusAuth,
 };
-
-const mainModules = {
-  ...RouterHome,
-  ...RouterClass,
-}
-
 
 const settings = {
   initialRouteName: 'BinusSignIn',
@@ -32,9 +26,14 @@ const exitAppWhiteListScreen = [
 ];
 
 export default {
+  HomeLecturerStackNav,
+  HomeStudentStackNav,
+  HomeNavConfig,
+  ClassLecturerStackNav, 
+  ClassNavConfig, 
+  ClassStudentStackNav,
   auth,
   settings,
   exitAppWhiteListScreen,
-  mainModules,
   mainModulesSettings
 };

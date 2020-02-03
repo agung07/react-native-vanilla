@@ -5,7 +5,10 @@
 import {
   CLASSFETCH,
   CLASSSUCCESS,
-  CLASSFAILURE
+  CLASSFAILURE,
+  UPCOMINGCLASSFETCH,
+  UPCOMINGCLASSSUCCESS,
+  UPCOMINGCLASSFAILURE,
 } from './ConfigHome';
 import { IReducerHomeState } from './interfaces/reducers';
 
@@ -41,6 +44,31 @@ export function ReducerHome(state = initialState, action): IReducerHomeState {
         err: action.err,
         action: action.type,
       };
+
+      case UPCOMINGCLASSFETCH:
+        return {
+          ...state,
+          fetch: true,
+          res: null,
+          action: action.type,
+        };
+  
+      case UPCOMINGCLASSSUCCESS:
+        return {
+          ...state,
+          fetch: false,
+          res: action.res,
+          action: action.type,
+        };
+  
+      case UPCOMINGCLASSFAILURE:
+        return {
+          ...state,
+          fetch: false,
+          res: null,
+          err: action.err,
+          action: action.type,
+        };
 
     default:
       return state;
