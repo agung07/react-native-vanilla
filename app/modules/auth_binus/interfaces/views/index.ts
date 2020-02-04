@@ -1,29 +1,30 @@
-
-
 import { 
   NavigationScreenProp, 
   NavigationState, 
   NavigationParams 
 } from 'react-navigation';
 
-export interface IBinusSignInAuthState {
-  emailInput: string,
-  passwordInput: string,
+interface iFormLogin {
+  username: string;
+  password: string;
+}
+
+export interface ILoginState {
+  form: iFormLogin;
   showLoadingModal: Boolean,
   action?: any,
   err?: any,
   res?: any,
+  errorMsg: string;
 }
 
-export interface IBinusSignInAuthProps {
+export interface ILoginProps {
   navigation: NavigationScreenProp<NavigationState, NavigationParams>;
   action?: any;
   err?: any;
   res?: any;
-  onRequest: (
-    { email, password } :
-    { email: string, password: string }
-    ) => void;
+  onRequest: Function;
+  getProfileRequest: Function;
 }
 
 export interface IBinusLoadingAuthState {

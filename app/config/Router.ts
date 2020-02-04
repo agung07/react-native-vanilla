@@ -10,7 +10,7 @@ const auth = {
 };
 
 const settings = {
-  initialRouteName: 'BinusSignIn',
+  initialRouteName: 'Login',
   headerMode: 'none',
 };
 
@@ -22,7 +22,7 @@ const mainModulesSettings  = {
 }
 
 const exitAppWhiteListScreen = [
-  'BinusSignIn',
+  'Login',
 ];
 
 export default {

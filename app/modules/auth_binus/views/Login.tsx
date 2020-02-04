@@ -13,20 +13,22 @@ import { NormalButton } from '../../../components/button';
 import MyInput from '../../../components/my_input';
 import LoadingModal from '../../../components/loading_modal';
 import StyleAuth from '../StyleAuth';
-import { authFetch } from '../ActionAuth';
+import { loginRequest, getProfileRequest } from '../ActionAuth';
 import _ from '../../../lang';
 import { 
-  IBinusSignInAuthProps,
-  IBinusSignInAuthState,
+  ILoginProps,
+  ILoginState,
 } from '../interfaces/views';
 import {
   setToken,
   getToken
 } from '../../../config/Helpers'
+import { BinusMayaLogo } from '../../../assets/images'; 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
-  constructor(props: IBinusSignInAuthProps) {
+class Login extends Component<ILoginProps, ILoginState> {
+  constructor(props: ILoginProps) {
     super(props);
 
     //JSX
@@ -37,6 +39,7 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
     this.onFormValueChange = this.onFormValueChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.loginCallback = this.loginCallback.bind(this);
+    this.validate = this.validate.bind(this);
 
     this.state = {
       showLoadingModal: false,
@@ -46,19 +49,22 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
       form: {
         username: '',
         password: ''
-      }
+      },
+      errorMsg: ''
     };
   }
   componentDidMount() {
-    this.setState(
-      {showLoadingModal: true},
-      () => getToken((res) => {
-        if(res) {
-          this.props.navigation.navigate('App')
-        }
-        this.setState({showLoadingModal: false});
-      })
-      );
+    this.setState({showLoadingModal: false});
+    this.props.getProfileRequest('student')
+    // this.setState(
+    //   {showLoadingModal: true},
+    //   () => getToken((res) => {
+    //     if(res) {
+    //       this.props.navigation.navigate('App')
+    //     }
+    //     this.setState({showLoadingModal: false});
+    //   })
+    //   );
   }
 
   componentWillUnmount() {
@@ -76,6 +82,9 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
   }
 
   onSubmit(): void {
+    const validate = this.validate();
+    if(!validate) return ;
+
     this.setState({ showLoadingModal: true })
     const { onRequest } = this.props;
     if(typeof onRequest == 'function') {
@@ -83,19 +92,37 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
     }
   }
 
+  validate = (): boolean => {
+    const { form } = this.state;
+    let success = true;
+    let errorMsg = '';
+
+    if(!form.username || !form.password) {
+      errorMsg = 'Username and password must be fill';
+      success = false;
+    }
+
+    this.setState({ errorMsg: errorMsg});
+
+    return success; 
+  }
+
   loginCallback(value?: any): void {
+    const { getProfileRequest } = this.props;
+    this.setState({ showLoadingModal: false })
     if(value) {
-      setTimeout(
-       () => setToken(value.token, (response) => {
-          this.setState({ showLoadingModal: false })
-          if(response) {
-            this.props.navigation.navigate('App')
-          } else {
-            alert("failure")
-          }
-        }),
-        1000
-      )
+      getProfileRequest('student')
+      // setTimeout(
+      //  () => setToken(value.token, (response) => {
+      //     this.setState({ showLoadingModal: false })
+      //     if(response) {
+      //       this.props.navigation.navigate('App')
+      //     } else {
+      //       alert("failure")
+      //     }
+      //   }),
+      //   1000
+      // ) 
     } else {
       this.setState({ showLoadingModal: false })
       alert("login gagal, username atau password salah");
@@ -105,7 +132,8 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
   }
 
   TemplateForm(): JSX.Element {
-    const { username, password } = this.state;
+    const { errorMsg, form } = this.state;
+    const { username, password } = form;
     return (
       <View
         style={StyleAuth.formContainer}
@@ -125,13 +153,19 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
           secureTextEntry
           style={StyleAuth.emailInput}
         />
+        {
+          errorMsg !== '' && 
+          <View style={StyleAuth.errorContainer}>
+            <Text style={StyleAuth.errorLabel}>{errorMsg}</Text>
+          </View>
+        }
       </View>
     );
   }
   TemplateHeader(): JSX.Element {
     return (
       <View style={StyleAuth.headerWrapper}>
-        <Text style={StyleAuth.headerTitle}>BINUS MAYA</Text>
+        <BinusMayaLogo />
       </View>
     )
   }
@@ -156,10 +190,15 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
         end={{ x: 1, y: 1 }} 
         style={{ height: '100%', width: '100%'}}
       >
-        <View style={StyleAuth.container}>
+        <View style={StyleAuth.body}>
           {this.TemplateHeader()}
           {this.TemplateForm()}
           {this.TempalteButton()}
+        </View>
+        <View style={StyleAuth.footer}>
+          <TouchableOpacity>
+            <Text style={StyleAuth.forgotLabel}>Forgot Your Password?</Text>
+          </TouchableOpacity>
         </View>
         <LoadingModal  show={this.state.showLoadingModal} />
       </LinearGradient>
@@ -175,7 +214,8 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onRequest: (value: Object, callback: Function) => dispatch(authFetch(value, callback)),
+  onRequest: (value: Object, callback: Function) => dispatch(loginRequest(value, callback)),
+  getProfileRequest: (value: string) => dispatch(getProfileRequest(value)) 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BinusSignInAuth);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

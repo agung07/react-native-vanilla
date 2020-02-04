@@ -7,34 +7,56 @@ import {
 } from 'redux-saga/effects';
 import { post, request } from '../../utilities/StoreApi';
 import {
-  BINUSAUTHFETCH, 
+  LOGINREQUEST, 
+  GETPROFILEREQUEST
 } from './ConfigAuth';
 import {
-  authSuccess,
-  authFailed,
+  loginSuccess,
+  loginFailed,
 } from './ActionAuth';
-import  { IWorkerSagaBinusSignIn } from './interfaces/sagas';
+import  { IWorkerSagaLogin } from './interfaces/sagas';
 import { FakeLogin } from './HelpersAuth';
 import { APISINTONG } from '../../config/Api';
+import { takeEvery } from 'redux-saga';
 
 
-function* workerSagaBinusSignIn({type, send, callback}: IWorkerSagaBinusSignIn) {
+function* workerSagaLogin({type, send, callback}: IWorkerSagaLogin) {
   try {
     const response = yield call(request, `${APISINTONG}/login`, 'POST', send, 'application/json');
 
-    if (response.success) {
-      callback(response.data);
-      yield put.resolve(authSuccess(response.data));
-    } else {
-      callback(false);
-      yield put.resolve(authFailed(response.data.error));
+    const dummy = {
+      token: 'initokenlogin',
+      roles: ["student", "lecturer"]
     }
+    setTimeout(
+      () => {
+        callback(dummy);
+      },
+      1000
+    )
+    // if (response.success) {
+    //   callback(response.data);
+    //   yield put.resolve(loginSuccess(response.data));
+    // } else {
+    //   callback(false);
+    //   yield put.resolve(loginFailed(response.data.error));
+    // }
   } catch (error) {
     callback(false);
-    yield put.resolve(authFailed(error.message));
+    yield put.resolve(loginFailed(error.message));
+  }
+}
+
+function* workerSagaGetProfile({type, req, callback}: any) {
+  console.log("workerSagaGetProfile")
+  try {
+
+  } catch(err) {
+
   }
 }
 
 export const watcherBinusAuth = [
-  takeLatest(BINUSAUTHFETCH, workerSagaBinusSignIn),
+  takeLatest(LOGINREQUEST, workerSagaLogin),
+  takeEvery(GETPROFILEREQUEST, workerSagaGetProfile)
 ];

@@ -18,8 +18,9 @@ export const NormalButton = ({
   text,
   containerStyle,
   textStyle,
+  disabled
 }: INormalButton): JSX.Element => (
-    <TouchableOpacity onPress={onPress} style={[StyleButton.buttonContainer, StyleButton.normal, containerStyle]}>
+    <TouchableOpacity disabled={disabled || false} onPress={onPress} style={[StyleButton.buttonContainer, StyleButton.normal, containerStyle]}>
       <Text style={[StyleButton.text, textStyle]}>
         {text.toUpperCase()}
       </Text>

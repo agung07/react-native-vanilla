@@ -1,5 +1,5 @@
-export interface IWorkerSagaBinusSignIn {
+export interface IWorkerSagaLogin {
   type: string;
   send?: any;
-  callback? :function;
+  callback? :Function;
 }

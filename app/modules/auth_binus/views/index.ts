@@ -3,12 +3,11 @@
 */
 
 import BinusLoadingAuth_ from './LoadingAuth';
-import BinusSignInAuth_ from './SignInAuth';
+import Login from './Login';
 
 const BinusLoadingAuth = BinusLoadingAuth_;
-const BinusSignInAuth = BinusSignInAuth_;
 
 export default {
   BinusLoadingAuth,
-  BinusSignInAuth,
+  Login,
 };

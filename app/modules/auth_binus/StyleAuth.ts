@@ -3,15 +3,23 @@
 */
 
 import { StyleSheet, Dimensions } from 'react-native';
-
+import Colors from '../../styles/Colors';
 const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
+  body: {
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  footer: {
+    height: '10%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -80
+  },
+  forgotLabel: {
+    fontSize: 16,
+    color: Colors.white
   },
   innerContainer: {
     marginBottom: 92,
@@ -39,11 +47,24 @@ export default StyleSheet.create({
     width: '100%'
   },
   headerWrapper: {
-
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   headerTitle: {
     fontSize: 32,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  errorContainer: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  errorLabel: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 });
