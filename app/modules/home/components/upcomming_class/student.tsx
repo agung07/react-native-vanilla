@@ -161,21 +161,21 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
     } = this.props;
     return  (
       <View style={Styles.BodyStudent}>
-        <View style={Styles.tasksIconWrapper}>
+        <View style={Styles.LabelWrapper}>
           <Image
             source={markerGrayIcon}
-            style={Styles.tasksIcon}
+            style={Styles.Icon}
           />
-          <Text style={Styles.tasksLabel}>
+          <Text style={Styles.Label}>
             {classRoom} - {classCampus}
           </Text>
         </View>
-        <View style={Styles.tasksIconWrapper}>
+        <View style={Styles.LabelWrapper}>
           <Image
             source={watchGrayIcon}
-            style={Styles.tasksIcon}
+            style={Styles.Icon}
           />
-          <Text style={Styles.tasksLabel}>
+          <Text style={Styles.Label}>
             {`${new Date(dateStart).getHours()}:${new Date(dateStart).getMinutes()}`} - 
             {` ${new Date(dateEnd).getHours()}:${new Date(dateEnd).getMinutes()}`} 
           </Text>

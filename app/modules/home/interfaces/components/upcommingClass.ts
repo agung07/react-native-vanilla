@@ -11,9 +11,9 @@ export interface IUpcomingClassLecturerProps {
   courseName: string;
   classRoom: string;
   classCampus: string;
-  DateStart: Date;
-  DateEnd: Date;
-  sessionProgress: Object;
+  dateStart: Date;
+  dateEnd: Date;
+  sessionProgress?: Object;
   onPress?: Function;
 }
 

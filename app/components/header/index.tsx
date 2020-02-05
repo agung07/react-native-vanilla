@@ -4,25 +4,31 @@ import {
   Text,
   TouchableOpacity
 } from 'react-native';
-import { IHeaderLecturer } from './interfaces';
-import Styles from './StyleHeaderStudent';
+import { IHeader } from './interfaces';
+import Styles from './StyleHeader';
 import CircleIcon from '../circle_icon';
 import Colors from '../../styles/Colors';
 import Avatar from '../avatar';
 import markerGrayIcon from '../../assets/images/marker-gray.png';
 import searchGrayIcon from '../../assets/images/search-gray.png';
 
-const HeaderLecturer = ({ isHome }: IHeaderLecturer): JSX.Element => {
+const Header = ({ isHome, role, pictureUrl }: IHeader): JSX.Element => {
+  let backgroundColor = Colors.white;
+  let textColor = Colors.black;
+  if(role === 'lecturer') {
+    backgroundColor = Colors.orange;
+    textColor = Colors.white;
+  }
   return (
     <View style={Styles.container}>
     <View>
-      <View style={Styles.LabelContainer}>
+      <View style={[Styles.LabelContainer, { backgroundColor: backgroundColor }]}>
         <Avatar
           size={45}
-          source={'https://placeimg.com/640/480/people'}
+          source={pictureUrl}
         />
-        <Text style={Styles.Label}>
-          Lecturer
+        <Text style={[Styles.Label, { color: textColor }]}>
+          {role}
         </Text>
       </View>
     </View>
@@ -60,4 +66,4 @@ const HeaderLecturer = ({ isHome }: IHeaderLecturer): JSX.Element => {
   )
 }
 
-export default HeaderLecturer;
+export default Header;

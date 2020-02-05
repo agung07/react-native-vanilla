@@ -72,12 +72,12 @@ export default StyleSheet.create({
     paddingVertical: 15,
 
   },
-  tasksIconWrapper: {
+  LabelWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-
+    marginVertical: 3
   },
-  tasksIcon: {
+  Icon: {
     height: 15,
     width: 15,
     borderRadius: 15,
@@ -85,7 +85,7 @@ export default StyleSheet.create({
     borderColor: Colors.gray,
     borderWidth: 0.3
   },
-  tasksLabel: {
+  Label: {
     color: Colors.black,
     marginLeft: 5
   },

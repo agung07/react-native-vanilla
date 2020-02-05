@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import UpcomingClass from '../../components/upcomming_class';
 import StyleHome from '../../StyleHome';
 import LinearGradient from 'react-native-linear-gradient';
-import HeaderLecturer from '../../../../components/header_lecturer';
+import Header from '../../../../components/header';
 import ButtonNavigationGroup from '../../../../components/button_navigation_group';
 import _ from '../../../../lang';
 
@@ -78,8 +78,10 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
 
   TemplateHeader = (): JSX.Element => {
     return  <View style={StyleHome.headerWrapper}>
-              <HeaderLecturer 
+              <Header 
                 isHome
+                role={'lecturer'}
+                pictureUrl={'https://placeimg.com/640/480/people'}
               />
               <View style={StyleHome.headerTextWrapper}>
                 <Text style={StyleHome.headerTextGreeting}>{_('Good Morning')},</Text>
@@ -103,9 +105,9 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
                   courseName={upcommingClass.courseName}
                   classCampus={upcommingClass.classCampus}
                   classRoom={upcommingClass.classCampus}
-                  DateStart={upcommingClass.DateStart}
-                  DateEnd={upcommingClass.DateEnd}
-                  sessionProgress={upcommingClass.sessionProgress}
+                  dateStart={upcommingClass.dateStart}
+                  dateEnd={upcommingClass.dateEnd}
+                  // sessionProgress={upcommingClass.sessionProgress}
                   onPress={this.onUpcomingClassPress}
                 />
               )

@@ -22,6 +22,7 @@ import StyleClass from '../StyleClass';
 import { NavigationOptions } from '../../../config/NavigationOptions';
 import Styles from '../../../styles';
 import _ from '../../../lang';
+import Header from '../../../components/header';
 import { 
   IListClassState, 
   IListClassProps,
@@ -35,7 +36,6 @@ import {
   Icon,
 } from '../components/list/index';
 import LinearGradient from 'react-native-linear-gradient';
-import HeaderStudent from '../../../components/header_student';
 
 const initialState: IListClassState = {
   refreshing: false,
@@ -190,7 +190,10 @@ class UpcomingClass extends React.Component<IListClassProps, IListClassState> {
         <ScrollView contentContainerStyle={StyleClass.classContainer}>
           <LinearGradient colors={['#7b2183', '#3e1841']} style={StyleClass.linearGradient}>
             <View style={StyleClass.headerClass}>
-              <HeaderStudent/>
+              <Header
+                role={'student'}
+                pictureUrl={'https://placeimg.com/640/480/people'}
+              />
             </View>
             <View>
               <Text style={StyleClass.textMyClass}>My Courses</Text>

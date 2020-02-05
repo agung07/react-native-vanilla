@@ -18,9 +18,9 @@ import {
 } from '../../interfaces/views/';
 import { connect } from 'react-redux';
 import UpcomingClass from '../../components/upcomming_class';
+import Header from '../../../../components/header';
 import StyleHome from '../../StyleHome';
 import LinearGradient from 'react-native-linear-gradient';
-import HeaderStudent from '../../../../components/header_student';
 import ButtonNavigationGroup from '../../../../components/button_navigation_group';
 import _ from '../../../../lang';
 
@@ -65,14 +65,16 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
     const { upcommingClassFetch } = this.props;
     this.setState(
       { refreshing: true },
-      () => { upcommingClassFetch() }
+      () => { upcommingClassFetch('student') }
     )
   }
 
   TemplateHeader = (): JSX.Element => {
     return  <View style={StyleHome.headerWrapper}>
-              <HeaderStudent 
+              <Header 
                 isHome
+                role={'student'}
+                pictureUrl={'https://placeimg.com/640/480/people'}
               />
               <View style={StyleHome.headerTextWrapper}>
                 <Text style={StyleHome.headerTextGreeting}>{_('Good Morning')},</Text>
@@ -91,9 +93,9 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
             if(Object.keys(upcommingClass || {}).length > 0) {
               return  <UpcomingClass.Student 
                         id={upcommingClass.id}
-                        courseName={'English for Computer 2'}
-                        classCampus={'Anggrek'}
-                        classRoom={'204'}
+                        courseName={upcommingClass.courseName}
+                        classCampus={upcommingClass.classCampus}
+                        classRoom={upcommingClass.classRoom}
                         classCode={upcommingClass.classCode}
                         lecturers={upcommingClass.lecturers}
                         dateStart={upcommingClass.dateStart}
