@@ -43,7 +43,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
 
   componentDidMount() {
     const { upcommingClassFetch } = this.props;
-    if(typeof upcommingClassFetch == 'function') upcommingClassFetch()
+    if(typeof upcommingClassFetch == 'function') upcommingClassFetch('student')
   }
 
   static getDerivedStateFromProps(props, state){

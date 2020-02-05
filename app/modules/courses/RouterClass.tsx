@@ -36,8 +36,8 @@ export const ClassNavConfig = {
       tabBarVisible: istabBarVisible,
       tabBarIcon: () => (
         <GraduationHat 
-          height={25}
-          width={25}
+          height={22}
+          width={22}
           color={ isActive ? '#018dd5' : Colors.gray }
         />
       )

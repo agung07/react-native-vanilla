@@ -16,21 +16,21 @@ import {
 } from './ActionAuth';
 import  { IWorkerSagaLogin } from './interfaces/sagas';
 import { FakeLogin } from './HelpersAuth';
-import { APISINTONG } from '../../config/Api';
+import { APISINTONG, BASE_URL } from '../../config/Api';
 import { takeEvery } from 'redux-saga';
 
 
 function* workerSagaLogin({type, send, callback}: IWorkerSagaLogin) {
   try {
-    const response = yield call(request, `${APISINTONG}/login`, 'POST', send, 'application/json');
+    const response = yield call(request, `${BASE_URL}/SignInByEmail`, 'POST', send, 'application/json');
 
-    const dummy = {
-      token: 'initokenlogin',
-      roles: ["student", "lecturer"]
-    }
+    // const dummy = {
+    //   token: 'initokenlogin',
+    //   roles: ["student", "lecturer"]
+    // }
     setTimeout(
       () => {
-        callback(dummy);
+        callback(response);
       },
       1000
     )
@@ -47,7 +47,7 @@ function* workerSagaLogin({type, send, callback}: IWorkerSagaLogin) {
   }
 }
 
-function* workerSagaGetProfile({type, req, callback}: any) {
+function* workerSagaGetProfile({type, callback}: any) {
   console.log("workerSagaGetProfile")
   try {
 

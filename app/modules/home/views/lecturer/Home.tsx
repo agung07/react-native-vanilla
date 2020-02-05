@@ -103,8 +103,8 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
                   courseName={upcommingClass.courseName}
                   classCampus={upcommingClass.classCampus}
                   classRoom={upcommingClass.classCampus}
-                  DateStart={upcommingClass.DateStart}
-                  DateEnd={upcommingClass.DateEnd}
+                  dateStart={upcommingClass.dateStart}
+                  dateEnd={upcommingClass.dateEnd}
                   sessionProgress={upcommingClass.sessionProgress}
                   onPress={this.onUpcomingClassPress}
                 />

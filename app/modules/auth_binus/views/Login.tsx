@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import MyStatusBar from '../../../components/my_status_bar';
 import { NormalButton } from '../../../components/button';
 import MyInput from '../../../components/my_input';
 import LoadingModal from '../../../components/loading_modal';
@@ -55,7 +54,8 @@ class Login extends Component<ILoginProps, ILoginState> {
   }
   componentDidMount() {
     this.setState({showLoadingModal: false});
-    this.props.getProfileRequest('student')
+    // this.props.getProfileRequest('student')
+    // this.props.navigation.navigate('App')
     // this.setState(
     //   {showLoadingModal: true},
     //   () => getToken((res) => {
@@ -86,43 +86,49 @@ class Login extends Component<ILoginProps, ILoginState> {
     if(!validate) return ;
 
     this.setState({ showLoadingModal: true })
-    const { onRequest } = this.props;
-    if(typeof onRequest == 'function') {
-      onRequest(this.state.form, this.loginCallback)
+    const { loginRequest } = this.props;
+    if(typeof loginRequest == 'function') {
+      loginRequest(validate.data, this.loginCallback)
     }
   }
 
-  validate = (): boolean => {
+  validate = (): any => {
     const { form } = this.state;
-    let success = true;
-    let errorMsg = '';
-
-    if(!form.username || !form.password) {
-      errorMsg = 'Username and password must be fill';
-      success = false;
+    let result = {
+      success: true,
+      data: null
     }
 
-    this.setState({ errorMsg: errorMsg});
+    if(!form.username || !form.password) {
+      Alert.alert(
+        'Failed',
+        'Username and password must be filled'
+      )
+      result.success = false;
+    }
+    if(result.success){
+      result.data = {
+        loginName: form.username,
+        password: form.password
+      }
+    } 
 
-    return success; 
+    return result; 
   }
 
   loginCallback(value?: any): void {
-    const { getProfileRequest } = this.props;
+    // const { getProfileRequest } = this.props;
     this.setState({ showLoadingModal: false })
     if(value) {
-      getProfileRequest('student')
-      // setTimeout(
-      //  () => setToken(value.token, (response) => {
-      //     this.setState({ showLoadingModal: false })
-      //     if(response) {
-      //       this.props.navigation.navigate('App')
-      //     } else {
-      //       alert("failure")
-      //     }
-      //   }),
-      //   1000
-      // ) 
+      setTimeout(
+       () => setToken(value, (response) => {
+          if(response) {
+            // getProfileRequest()
+            this.props.navigation.navigate('App')
+          } 
+        }),
+        1000
+      ) 
     } else {
       this.setState({ showLoadingModal: false })
       alert("login gagal, username atau password salah");
@@ -153,12 +159,12 @@ class Login extends Component<ILoginProps, ILoginState> {
           secureTextEntry
           style={StyleAuth.emailInput}
         />
-        {
+        {/* {
           errorMsg !== '' && 
           <View style={StyleAuth.errorContainer}>
             <Text style={StyleAuth.errorLabel}>{errorMsg}</Text>
           </View>
-        }
+        } */}
       </View>
     );
   }
@@ -176,6 +182,7 @@ class Login extends Component<ILoginProps, ILoginState> {
         <NormalButton
           onPress={() => this.onSubmit()}
           text={'login'}
+          textStyle={StyleAuth.textLogin}
           containerStyle={StyleAuth.buttonLogin}
         />
       </View>
@@ -188,7 +195,7 @@ class Login extends Component<ILoginProps, ILoginState> {
         colors={['#1C98D6', '#863A92']} 
         start={{x:0, y: 0}} 
         end={{ x: 1, y: 1 }} 
-        style={{ height: '100%', width: '100%'}}
+        style={StyleAuth.background}
       >
         <View style={StyleAuth.body}>
           {this.TemplateHeader()}
@@ -214,8 +221,8 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onRequest: (value: Object, callback: Function) => dispatch(loginRequest(value, callback)),
-  getProfileRequest: (value: string) => dispatch(getProfileRequest(value)) 
+  loginRequest: (value: Object, callback: Function) => dispatch(loginRequest(value, callback)),
+  getProfileRequest: () => dispatch(getProfileRequest()) 
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

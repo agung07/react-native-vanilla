@@ -23,7 +23,7 @@ export interface ILoginProps {
   action?: any;
   err?: any;
   res?: any;
-  onRequest: Function;
+  loginRequest: Function;
   getProfileRequest: Function;
 }
 

@@ -15,6 +15,6 @@ export const loginRequest = (value: any, callback?: Function) => ({ type: LOGINR
 export const loginSuccess = value => ({ type: LOGINSUCCESS, res: value });
 export const loginFailed = value => ({ type: LOGINFAILED, err: value });
 
-export const getProfileRequest = (value: string) => ({ type: GETPROFILEREQUEST, value });
+export const getProfileRequest = () => ({ type: GETPROFILEREQUEST });
 export const getProfileSuccess = (value: Object) => ({ type: GETPROFILESUCCESS, value });
 export const getProfileFailed = (value: any) => ({ type: GETPROFILEFAILED, value }); 

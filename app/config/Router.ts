@@ -2,8 +2,31 @@
  * @author: dwi.setiyadi@gmail.com
 */
 import RouterBinusAuth from '../modules/auth_binus/RouterAuth';
-import { ClassLecturerStackNav, ClassNavConfig, ClassStudentStackNav } from '../modules/courses/RouterClass';
-import { HomeLecturerStackNav, HomeNavConfig, HomeStudentStackNav } from '../modules/home/RouterHome';
+import { 
+  ClassLecturerStackNav, 
+  ClassNavConfig, 
+  ClassStudentStackNav 
+} from '../modules/courses/RouterClass';
+import { 
+  HomeLecturerStackNav, 
+  HomeNavConfig, 
+  HomeStudentStackNav 
+} from '../modules/home/RouterHome';
+import { 
+  ScheduleLecturerStackNav, 
+  ScheduleNavConfig, 
+  ScheduleStudentStackNav 
+} from '../modules/schedule/routerSchedule';
+import { 
+  NotificationLecturerStackNav, 
+  NotificationStudentStackNav, 
+  NotificationNavConfig 
+} from '../modules/notification/routerNotification';
+import {
+  OtherLecturerStackNav,
+  OtherStudentStackNav,
+  OtherNavConfig
+} from '../modules/other/routerOther'
 
 const auth = {
   ...RouterBinusAuth,
@@ -32,8 +55,17 @@ export default {
   ClassLecturerStackNav, 
   ClassNavConfig, 
   ClassStudentStackNav,
+  ScheduleLecturerStackNav, 
+  ScheduleNavConfig, 
+  ScheduleStudentStackNav,
+  NotificationLecturerStackNav, 
+  NotificationStudentStackNav, 
+  NotificationNavConfig,
+  OtherLecturerStackNav,
+  OtherStudentStackNav,
+  OtherNavConfig,
   auth,
   settings,
   exitAppWhiteListScreen,
-  mainModulesSettings
+  mainModulesSettings,
 };
