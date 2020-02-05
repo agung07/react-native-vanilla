@@ -57,6 +57,7 @@ export default StyleSheet.create({
   },
   lecturerName: {
     color: Colors.black,
+    fontSize: 17,
     marginLeft: 5
   },
   BodyLecturer: {
@@ -158,13 +159,13 @@ export default StyleSheet.create({
     width: '100%',
   },
   classProgressLabel: {
-    color: Colors.gray,
+    color: Colors.black,
     fontSize: 12
   },
   progressBar: {
-    backgroundColor: Colors.gray,
+    backgroundColor: '#D8D8D8',
     width: '100%',
-    height: 8,
+    height: 4,
     position: 'relative',
     marginTop: 5,
   },

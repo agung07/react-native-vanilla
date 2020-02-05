@@ -37,7 +37,6 @@ export const request = async (operation: string, method: string, data?: any, con
   })
   .then(res => res.data)
   .catch(err => {
-    console.log("err: ", err)
     return err;
   })
 }

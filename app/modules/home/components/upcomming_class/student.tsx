@@ -6,6 +6,10 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { IUpcomingClassStudentProps } from '../../interfaces/components/upcommingClass';
+import {
+  PinMapCircularIcon,
+  ClockCircularIcon
+} from '../../../../assets/images';
 import _ from '../../../../lang';
 import LinearGradient from 'react-native-linear-gradient';
 import Styles from './StyleUpCommingClass';
@@ -123,13 +127,23 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
       <View style={Styles.classInfo}>
         <View style={Styles.headerWrapper}>
           <GradientLabel
-            label={_('Upcomming Class')}
+            label={_('Upcoming Class')}
+            colors={['#3023AE', '#C86DD7']}
+            styleContainer={{
+              paddingHorizontal: 18,
+              paddingVertical: 18
+            }}
+            styleText={{
+              fontWeight: 'bold',
+              fontSize: 15
+            }}
           />
           <View style={Styles.duration}>
             <Image 
               source={watchGrayIcon}
               style={Styles.watchIcon}
             />
+            <PinMapCircularIcon />
             <Text style={Styles.durationLabel}>{duration}</Text>
           </View>
         </View>
@@ -141,7 +155,7 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
             <View style={Styles.lecturerInfoWrapper} key={lecturer.id}>
               <Avatar 
                 source={lecturer.lecturePictureUrl}
-                size={35}
+                size={40}
               />
               <Text style={Styles.lecturerName}>{lecturer.lectureName}</Text>
             </View>
@@ -200,7 +214,7 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
     const { resources, onPress } = this.props;
     return  (
       <LinearGradient 
-        colors={['#F44F5F', '#AC3F4F']} 
+        colors={['#f5515f', '#9f041b']} 
         style={Styles.todoWrapper}
       >
         <View style={Styles.Wrapper}>
