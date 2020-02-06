@@ -2,7 +2,7 @@
  * @author: dwi.setiyadi@gmail.com
 */
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import Colors_ from './Colors';
 
 const Colors = Colors_;
@@ -13,6 +13,9 @@ const Main = StyleSheet.create({
     margin: 0,
     padding: 0,
     backgroundColor: Colors.white,
+  },
+  statusBar: {
+    paddingTop: StatusBar.currentHeight
   },
   appHeader: {
     backgroundColor: Colors.purple,

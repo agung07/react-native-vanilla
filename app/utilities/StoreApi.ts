@@ -24,7 +24,7 @@ export const post = (operation: string, data: any): any => axios({
 
 export const get = (operation: string, data: any): any => axios.get(`${APIMO}${operation}?${qs.stringify(data)}`);
 
-export const request = async (operation: string, method: string, data?: any, contentType?: string = 'application/json'): any => {
+export const request = async (operation: string, method: string, data?: any, token?: string, contentType?: string = 'application/json'): any => {
   const Token = await getToken();  
   return axios({
     method: method,
@@ -32,7 +32,7 @@ export const request = async (operation: string, method: string, data?: any, con
     data,
     headers: {
       'content-type': contentType,
-      'Authorization': `Bearer ${Token}` 
+      'Authorization': `Bearer ${token}` 
     }
   })
   .then(res => res.data)

@@ -4,10 +4,10 @@
 
 import React, { Component } from 'react';
 import {
-  BackHandler, View, Alert, Platform,
+  BackHandler, View, Alert, Platform, StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
-import Router from '../Router';
+import { RouterStudent, RouterLecturer } from '../Router';
 import RouterConfig from '../../config/Router';
 import NavigationService from '../NavigationService';
 import { setScreen } from './ActionContainer';
@@ -68,10 +68,14 @@ class ViewContainer extends Component<any, any> {
     }
   }
 
+  Router = (): any => {
+  }
+
   render() {
     return (
       <View style={Styles.Main.container}>
-        <Router
+        <StatusBar translucent={true} barStyle='light-content' backgroundColor={'transparent'} />
+        <RouterStudent
           ref={(ref) => {
             NavigationService.setTopLevelNavigator(ref);
           }}

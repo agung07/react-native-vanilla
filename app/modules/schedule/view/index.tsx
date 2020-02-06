@@ -3,6 +3,7 @@ import {
   View,
   Text
 } from 'react-native';
+import StylesGlobal from '../../../styles';
 
 class ScheduleView extends Component<any, any> {
   /**
@@ -14,7 +15,7 @@ class ScheduleView extends Component<any, any> {
 
   render() {
     return (
-      <View>
+      <View style={StylesGlobal.Main.statusBar}>
         <Text>Schedule</Text>
       </View>
     )

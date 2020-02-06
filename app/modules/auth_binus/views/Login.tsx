@@ -4,26 +4,22 @@
 
 import React, { Component } from 'react';
 import {
-  View, Alert, AsyncStorage, Text,
+  View, Alert, Text, TouchableOpacity
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { NormalButton } from '../../../components/button';
-import MyInput from '../../../components/my_input';
-import LoadingModal from '../../../components/loading_modal';
-import StyleAuth from '../StyleAuth';
-import { loginRequest, getProfileRequest } from '../ActionAuth';
-import _ from '../../../lang';
 import { 
   ILoginProps,
   ILoginState,
 } from '../interfaces/views';
-import {
-  setToken,
-  getToken
-} from '../../../config/Helpers'
 import { BinusMayaLogo } from '../../../assets/images'; 
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { loginRequest } from '../ActionAuth';
+import LinearGradient from 'react-native-linear-gradient';
+import MyInput from '../../../components/my_input';
+import LoadingModal from '../../../components/loading_modal';
+import StyleAuth from '../StyleAuth';
+import _ from '../../../lang';
+import StylesGlobal from '../../../styles'
 
 
 class Login extends Component<ILoginProps, ILoginState> {
@@ -48,23 +44,19 @@ class Login extends Component<ILoginProps, ILoginState> {
       form: {
         username: '',
         password: ''
-      },
-      errorMsg: ''
+      }
     };
   }
-  componentDidMount() {
-    this.setState({showLoadingModal: false});
-    // this.props.getProfileRequest('student')
-    // this.props.navigation.navigate('App')
-    // this.setState(
-    //   {showLoadingModal: true},
-    //   () => getToken((res) => {
-    //     if(res) {
-    //       this.props.navigation.navigate('App')
-    //     }
-    //     this.setState({showLoadingModal: false});
-    //   })
-    //   );
+
+  componentDidMount = async () => {
+    await this.setState({showLoadingModal: true});
+
+    if(this.props.res) {   
+      await this.setState({showLoadingModal: false});
+      this.props.navigation.navigate('App');
+      return;
+    }
+    await this.setState({showLoadingModal: false});
   }
 
   componentWillUnmount() {
@@ -117,28 +109,19 @@ class Login extends Component<ILoginProps, ILoginState> {
   }
 
   loginCallback(value?: any): void {
-    // const { getProfileRequest } = this.props;
     this.setState({ showLoadingModal: false })
     if(value) {
-      setTimeout(
-       () => setToken(value, (response) => {
-          if(response) {
-            // getProfileRequest()
-            this.props.navigation.navigate('App')
-          } 
-        }),
-        1000
-      ) 
+      this.props.navigation.navigate('App');
     } else {
-      this.setState({ showLoadingModal: false })
-      alert("login gagal, username atau password salah");
-
+      Alert.alert(
+        'Login Failed',
+        'Username or password did not match'
+      );
     }
-    
   }
 
   TemplateForm(): JSX.Element {
-    const { errorMsg, form } = this.state;
+    const { form } = this.state;
     const { username, password } = form;
     return (
       <View
@@ -159,15 +142,10 @@ class Login extends Component<ILoginProps, ILoginState> {
           secureTextEntry
           style={StyleAuth.emailInput}
         />
-        {/* {
-          errorMsg !== '' && 
-          <View style={StyleAuth.errorContainer}>
-            <Text style={StyleAuth.errorLabel}>{errorMsg}</Text>
-          </View>
-        } */}
       </View>
     );
   }
+
   TemplateHeader(): JSX.Element {
     return (
       <View style={StyleAuth.headerWrapper}>
@@ -195,7 +173,7 @@ class Login extends Component<ILoginProps, ILoginState> {
         colors={['#1C98D6', '#863A92']} 
         start={{x:0, y: 0}} 
         end={{ x: 1, y: 1 }} 
-        style={StyleAuth.background}
+        style={[StylesGlobal.Main.statusBar, StyleAuth.background]}
       >
         <View style={StyleAuth.body}>
           {this.TemplateHeader()}
@@ -222,7 +200,6 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   loginRequest: (value: Object, callback: Function) => dispatch(loginRequest(value, callback)),
-  getProfileRequest: () => dispatch(getProfileRequest()) 
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

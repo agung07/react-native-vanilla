@@ -11,11 +11,10 @@ interface iFormLogin {
 
 export interface ILoginState {
   form: iFormLogin;
-  showLoadingModal: Boolean,
+  showLoadingModal: boolean,
   action?: any,
   err?: any,
   res?: any,
-  errorMsg: string;
 }
 
 export interface ILoginProps {
@@ -24,7 +23,6 @@ export interface ILoginProps {
   err?: any;
   res?: any;
   loginRequest: Function;
-  getProfileRequest: Function;
 }
 
 export interface IBinusLoadingAuthState {

@@ -57,10 +57,18 @@ const AppStudent = createBottomTabNavigator(
   },
   RouterConfig.mainModulesSettings
 )
+const Auth = createStackNavigator(RouterConfig.auth, { initialRouteName: 'Login', headerMode: 'none'});
 
-const Auth = createStackNavigator(RouterConfig.auth, RouterConfig.settings);
+export const RouterLecturer = createAppContainer(
+  createSwitchNavigator(
+    {
+      Auth: Auth,
+      App: AppLecturer
+   }
+  )
+);
 
-export default createAppContainer(
+export const RouterStudent = createAppContainer(
   createSwitchNavigator(
     {
       Auth: Auth,

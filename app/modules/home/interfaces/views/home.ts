@@ -17,6 +17,13 @@ export interface IHomeLecturerProps {
   upcommingClassFetch: Function;
 }
 
+interface IProfile {
+  userId: string;
+  fullName: string;
+  userPictureUrl: string;
+  roleTypes: Array<string>;
+}
+
 export interface IHomeLecturerState {
   upcommingClass: IUpcomingClassLecturerProps;
   refreshing: boolean;
@@ -30,9 +37,11 @@ export interface IHomeStudentProps {
   homeRes: any;
   homeErr: any;
   upcommingClassFetch: Function;
+  profileFetch: Function;
 }
 
 export interface IHomeStudentState {
   upcommingClass: IUpcomingClassStudentProps;
+  profile: IProfile;
   refreshing: boolean;
 }
