@@ -4,29 +4,26 @@
 
 import React, { Component } from 'react';
 import {
-  View, Alert, AsyncStorage, Text,
+  View, Alert, Text, TouchableOpacity
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import MyStatusBar from '../../../components/my_status_bar';
 import { NormalButton } from '../../../components/button';
+import { 
+  ILoginProps,
+  ILoginState,
+} from '../interfaces/views';
+import { BinusMayaLogo } from '../../../assets/images'; 
+import { loginRequest } from '../ActionAuth';
+import LinearGradient from 'react-native-linear-gradient';
 import MyInput from '../../../components/my_input';
 import LoadingModal from '../../../components/loading_modal';
 import StyleAuth from '../StyleAuth';
-import { authFetch } from '../ActionAuth';
 import _ from '../../../lang';
-import { 
-  IBinusSignInAuthProps,
-  IBinusSignInAuthState,
-} from '../interfaces/views';
-import {
-  setToken,
-  getToken
-} from '../../../config/Helpers'
+import StylesGlobal from '../../../styles'
 
 
-class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
-  constructor(props: IBinusSignInAuthProps) {
+class Login extends Component<ILoginProps, ILoginState> {
+  constructor(props: ILoginProps) {
     super(props);
 
     //JSX
@@ -37,6 +34,7 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
     this.onFormValueChange = this.onFormValueChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.loginCallback = this.loginCallback.bind(this);
+    this.validate = this.validate.bind(this);
 
     this.state = {
       showLoadingModal: false,
@@ -49,16 +47,16 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
       }
     };
   }
-  componentDidMount() {
-    this.setState(
-      {showLoadingModal: true},
-      () => getToken((res) => {
-        if(res) {
-          this.props.navigation.navigate('App')
-        }
-        this.setState({showLoadingModal: false});
-      })
-      );
+
+  componentDidMount = async () => {
+    await this.setState({showLoadingModal: true});
+
+    if(this.props.res) {   
+      await this.setState({showLoadingModal: false});
+      this.props.navigation.navigate('App');
+      return;
+    }
+    await this.setState({showLoadingModal: false});
   }
 
   componentWillUnmount() {
@@ -76,36 +74,55 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
   }
 
   onSubmit(): void {
+    const validate = this.validate();
+    if(!validate) return ;
+
     this.setState({ showLoadingModal: true })
-    const { onRequest } = this.props;
-    if(typeof onRequest == 'function') {
-      onRequest(this.state.form, this.loginCallback)
+    const { loginRequest } = this.props;
+    if(typeof loginRequest == 'function') {
+      loginRequest(validate.data, this.loginCallback)
     }
+  }
+
+  validate = (): any => {
+    const { form } = this.state;
+    let result = {
+      success: true,
+      data: null
+    }
+
+    if(!form.username || !form.password) {
+      Alert.alert(
+        'Failed',
+        'Username and password must be filled'
+      )
+      result.success = false;
+    }
+    if(result.success){
+      result.data = {
+        loginName: form.username,
+        password: form.password
+      }
+    } 
+
+    return result; 
   }
 
   loginCallback(value?: any): void {
+    this.setState({ showLoadingModal: false })
     if(value) {
-      setTimeout(
-       () => setToken(value.token, (response) => {
-          this.setState({ showLoadingModal: false })
-          if(response) {
-            this.props.navigation.navigate('App')
-          } else {
-            alert("failure")
-          }
-        }),
-        1000
-      )
+      this.props.navigation.navigate('App');
     } else {
-      this.setState({ showLoadingModal: false })
-      alert("login gagal, username atau password salah");
-
+      Alert.alert(
+        'Login Failed',
+        'Username or password did not match'
+      );
     }
-    
   }
 
   TemplateForm(): JSX.Element {
-    const { username, password } = this.state;
+    const { form } = this.state;
+    const { username, password } = form;
     return (
       <View
         style={StyleAuth.formContainer}
@@ -128,10 +145,11 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
       </View>
     );
   }
+
   TemplateHeader(): JSX.Element {
     return (
       <View style={StyleAuth.headerWrapper}>
-        <Text style={StyleAuth.headerTitle}>BINUS MAYA</Text>
+        <BinusMayaLogo />
       </View>
     )
   }
@@ -142,6 +160,7 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
         <NormalButton
           onPress={() => this.onSubmit()}
           text={'login'}
+          textStyle={StyleAuth.textLogin}
           containerStyle={StyleAuth.buttonLogin}
         />
       </View>
@@ -154,12 +173,17 @@ class BinusSignInAuth extends Component<IBinusSignInAuthProps, any> {
         colors={['#1C98D6', '#863A92']} 
         start={{x:0, y: 0}} 
         end={{ x: 1, y: 1 }} 
-        style={{ height: '100%', width: '100%'}}
+        style={[StylesGlobal.Main.statusBar, StyleAuth.background]}
       >
-        <View style={StyleAuth.container}>
+        <View style={StyleAuth.body}>
           {this.TemplateHeader()}
           {this.TemplateForm()}
           {this.TempalteButton()}
+        </View>
+        <View style={StyleAuth.footer}>
+          <TouchableOpacity>
+            <Text style={StyleAuth.forgotLabel}>Forgot Your Password?</Text>
+          </TouchableOpacity>
         </View>
         <LoadingModal  show={this.state.showLoadingModal} />
       </LinearGradient>
@@ -175,7 +199,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onRequest: (value: Object, callback: Function) => dispatch(authFetch(value, callback)),
+  loginRequest: (value: Object, callback: Function) => dispatch(loginRequest(value, callback)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BinusSignInAuth);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -2,6 +2,7 @@ export interface INormalButton {
   onPress?: () => void,
   text?: string,
   containerStyle?: any,
+  disabled?: boolean,
   textStyle?: any,
 }
 

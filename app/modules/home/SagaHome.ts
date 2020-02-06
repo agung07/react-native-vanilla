@@ -1,26 +1,26 @@
-/**
- * @author: dwi.setiyadi@gmail.com
-*/
-
 import {
   call, 
   put, 
   takeLatest, 
-  takeEvery
+  takeEvery,
+  select
 } from 'redux-saga/effects';
 import {
   CLASSFETCH,
   UPCOMINGCLASSFETCH,
+  PROFILEFETCH
 } from './ConfigHome';
 import {
   classSuccess,
   classFailed,
   upcommingClassSuccess,
-  upcommingClassFailed
+  upcommingClassFailed,
+  profileSuccess
 } from './ActionHome';
-import { APISINTONG, APIHENDRA } from '../../config/Api';
+import { APISINTONG, APIHENDRA, BASE_URL } from '../../config/Api';
 import { request } from '../../utilities/StoreApi';
 
+const getTokenState = (state) => state.auth.res;
 
 function* workerSagaClassFetch() {
   try {
@@ -38,50 +38,38 @@ function* workerSagaClassFetch() {
 function* workerSagaupcomingClassFetch({ role, type }: any) {
   console.log("workerSagaupcomingClassFetch has called");
   try {
-        
     const response = yield call(request, `${APIHENDRA}/course/class/upcomingclass/${role}`, 'GET');
-    const dummy = {
-      id: '12',
-      classCode: 'D23SW',
-      courseName: "English for Computer II",
-      classCampus: 'Anggrek Campus',
-      classRoom: "204",
-      lecturers: [
-        {
-          id: 20,
-          lectureName: 'Ratna Dwi Paramita, MA.',
-          lecturePictureUrl: 'https://placeimg.com/640/480/people'
-        }
-      ],
-      dateStart: new Date(Date.now() + 60 * 60 * 1000),
-      dateEnd: new Date(Date.now() + 3 * 60 * 60 * 1000),
-      resources: [
-        {
-          category: 'Video',
-          jumlah: 2,
-          duration: 60
-        },
-        {
-          category: 'Document',
-          jumlah: 4,
-          duration: 240
-        }
-      ],
-      sessionProgress: 50,
-    }
-    if(Object.keys(dummy || {}).includes("classCode")) {
-      yield put(upcommingClassSuccess(dummy));
-    } else {
-      throw new Error("error")
-    }
+    console.log("response: ", response)
+    yield put(upcommingClassSuccess(response));
 
   } catch (error) {
-    console.log("masuk error")
     yield put.resolve(upcommingClassFailed(error.message));
+  }
+}
+
+function* workerSagaProfileFetch(): any {
+  console.log("workerSagaupProfileFetch");
+  try {
+    const Token = yield select(getTokenState);
+    
+    // const response = yield call(request, `${BASE_URL}/Profile`, 'GET', null, Token);
+    // console.log("response: ", response)
+
+    const dummy = {
+      userId: '2sKkmsd8239',
+      fullName: 'Agung Perdana Gumelar',
+      userPictureUrl: 'https://placeimg.com/640/480/people',
+      roleTypes: ["student", "instructor"],
+    }
+    yield put.resolve(profileSuccess(dummy));
+
+  } catch (err) {
+
   }
 }
 
 export const watcherHome = [
   takeLatest(CLASSFETCH, workerSagaClassFetch),
   takeEvery(UPCOMINGCLASSFETCH, workerSagaupcomingClassFetch),
+  takeEvery(PROFILEFETCH, workerSagaProfileFetch),
 ];

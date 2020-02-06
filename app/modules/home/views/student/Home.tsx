@@ -6,11 +6,14 @@ import {
   RefreshControl,
 } from 'react-native';
 import {
-  upcommingClassFetch
+  upcommingClassFetch,
+  profileFetch
 } from '../../ActionHome';
 import {
   UPCOMINGCLASSSUCCESS,
   UPCOMINGCLASSFETCH,
+  PROFILEFETCH,
+  PROFILESUCCESS
 } from '../../ConfigHome';
 import {
   IHomeStudentProps,
@@ -23,9 +26,11 @@ import StyleHome from '../../StyleHome';
 import LinearGradient from 'react-native-linear-gradient';
 import ButtonNavigationGroup from '../../../../components/button_navigation_group';
 import _ from '../../../../lang';
+import StylesGlobal from '../../../../styles';
 
 const initialState: IHomeStudentState = {
   upcommingClass: null,
+  profile: null,
   refreshing: false,
 
 }
@@ -42,23 +47,25 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
   }
 
   componentDidMount() {
-    const { upcommingClassFetch } = this.props;
-    if(typeof upcommingClassFetch == 'function') upcommingClassFetch()
+    const { upcommingClassFetch, profileFetch } = this.props;
+    profileFetch();
+    // if(typeof upcommingClassFetch == 'function') upcommingClassFetch('student')
   }
 
   static getDerivedStateFromProps(props, state){
-    if(props.homeAction === UPCOMINGCLASSSUCCESS || props.homeAction === UPCOMINGCLASSFETCH) {
+    if(props.homeAction === UPCOMINGCLASSSUCCESS || props.profileAction === PROFILESUCCESS) {
       return {
         ...state,
         refreshing: false,
-        upcommingClass: props.homeRes
+        upcommingClass: props.homeRes,
+        profile: props.profileRes
       }
-    }
+    } 
     return state;
   }
 
   onRefresh = async (): Promise<void> => {
-    this.fetchUpcomingClass()
+    // this.fetchUpcomingClass()
   }
 
   fetchUpcomingClass = async (): Promise<void> => {
@@ -70,6 +77,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
   }
 
   TemplateHeader = (): JSX.Element => {
+    const profile = this.state.profile || {};
     return  <View style={StyleHome.headerWrapper}>
               <Header 
                 isHome
@@ -78,7 +86,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
               />
               <View style={StyleHome.headerTextWrapper}>
                 <Text style={StyleHome.headerTextGreeting}>{_('Good Morning')},</Text>
-                <Text style={StyleHome.headerTextName}>{'No Name'}</Text>
+                <Text style={StyleHome.headerTextName}>{profile.fullName || 'No Name'}</Text>
               </View>
               <ButtonNavigationGroup />
             </View>
@@ -88,7 +96,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
     const { upcommingClass } = this.state;
     return (
       <>
-        {
+        {/* {
           (() => {
             if(Object.keys(upcommingClass || {}).length > 0) {
               return  <UpcomingClass.Student 
@@ -107,7 +115,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
                       />
             }
           })()
-        }
+        } */}
       </>
     )
   }
@@ -124,7 +132,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
       >
         <LinearGradient 
           colors={['#1C9AD7', '#7F3485']} 
-          style={StyleHome.linierGradient}
+          style={[StylesGlobal.Main.statusBar, StyleHome.linierGradient]}
         >
           {this.TemplateHeader()}
           {this.TemplateBody()}
@@ -134,13 +142,19 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
   }
 }
 const mapStateToProps = (state: any): any => ({
-  homeFetch: state.home.fetch,
-  homeAction: state.home.action,
-  homeRes: state.home.res,
-  homeErr: state.home.err,
+  homeFetch: state.home.main.fetch,
+  homeAction: state.home.main.action,
+  homeRes: state.home.main.res,
+  homeErr: state.home.main.err,
+  
+  profileFetch: state.home.profile.fetch,
+  profileAction: state.home.profile.action,
+  profileRes: state.home.profile.res,
+  profileErr: state.home.profile.err,
 })
 const mapDispacthToProps = (dispatch: any): any => ({
   upcommingClassFetch: (role?: string) => dispatch(upcommingClassFetch(role)),
+  profileFetch: () => dispatch(profileFetch())
 })
 export default connect(
   mapStateToProps,

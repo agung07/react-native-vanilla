@@ -1,13 +1,12 @@
 import React from 'react';
-import Colors from '../../styles/Colors';
-import LecturerHome from './views/lecturer';
-import StudentHome from './views/student';
-import HomeIcon from '../../assets/images/home';
+import OtherView from './view';
 import { createStackNavigator } from 'react-navigation-stack';
-
-export const HomeLecturerStackNav = createStackNavigator(
+import { OtherIcon } from '../../../assets/images';
+import Colors from '../../../styles/Colors';
+ 
+export const OtherLecturerStackNav = createStackNavigator(
   {
-    Home:  LecturerHome.Main
+    Home:  OtherView
   },
   {
     initialRouteName: 'Home',
@@ -15,9 +14,9 @@ export const HomeLecturerStackNav = createStackNavigator(
   }
 )
 
-export const HomeStudentStackNav = createStackNavigator(
+export const OtherStudentStackNav = createStackNavigator(
   {
-    Home:  StudentHome.Main,
+    Home:  OtherView,
   },
   {
     initialRouteName: 'Home',
@@ -25,7 +24,7 @@ export const HomeStudentStackNav = createStackNavigator(
   }
 )
 
-export const HomeNavConfig = {
+export const OtherNavConfig = {
   navigationOptions: ({ navigation }) => {
     const { index } = navigation.state;
     const isActive =  navigation.isFocused();
@@ -36,9 +35,9 @@ export const HomeNavConfig = {
     return {
       tabBarVisible: istabBarVisible,
       tabBarIcon: () => (
-        <HomeIcon 
-          height={20}
-          width={20}
+        <OtherIcon 
+          height={25}
+          width={25}
           color={ isActive ? '#018dd5' : Colors.gray }
         />
       )

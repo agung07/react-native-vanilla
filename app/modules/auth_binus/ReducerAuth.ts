@@ -1,12 +1,11 @@
-/**
- * @author: dwi.setiyadi@gmail.com
-*/
-
 import {
-  BINUSAUTHFETCH,
-  BINUSAUTHSUCCESS,
-  BINUSAUTHFAILED,
+  LOGINREQUEST,
+  LOGINSUCCESS,
+  LOGINFAILED,
 } from './ConfigAuth';
+import {
+  LOGOUT
+} from '../other/ConfigOther';
 import { IReducerBinusAuthState } from './interfaces/reducers';
 
 const initialState: IReducerBinusAuthState = {
@@ -19,7 +18,7 @@ const initialState: IReducerBinusAuthState = {
 
 export function ReducerAuth(state = initialState, action): IReducerBinusAuthState {
   switch (action.type) {
-    case BINUSAUTHFETCH:
+    case LOGINREQUEST:
       return {
         ...state,
         fetch: true,
@@ -27,7 +26,7 @@ export function ReducerAuth(state = initialState, action): IReducerBinusAuthStat
         action: action.type,
       };
 
-    case BINUSAUTHSUCCESS:
+    case LOGINSUCCESS:
       return {
         ...state,
         fetch: false,
@@ -35,14 +34,21 @@ export function ReducerAuth(state = initialState, action): IReducerBinusAuthStat
         action: action.type,
       };
 
-    case BINUSAUTHFAILED:
+    case LOGINFAILED:
       return {
         ...state,
         fetch: false,
         err: action.err,
         action: action.type,
       };
-
+    case LOGOUT :
+      return {
+        fetch: false,
+        send: null,
+        res: null,
+        err: null,
+        action: ''
+      }
     default:
       return state;
   }

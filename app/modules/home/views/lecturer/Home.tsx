@@ -95,7 +95,7 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
     const {upcommingClass} = this.state;
     return (
       <>
-        {
+        {/* {
           (() => {
             if(Object.keys(upcommingClass || {}).length > 0) {
               return  (
@@ -107,13 +107,13 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
                   classRoom={upcommingClass.classCampus}
                   dateStart={upcommingClass.dateStart}
                   dateEnd={upcommingClass.dateEnd}
-                  // sessionProgress={upcommingClass.sessionProgress}
+                  sessionProgress={upcommingClass.sessionProgress}
                   onPress={this.onUpcomingClassPress}
                 />
               )
             }
           })()
-        }
+        } */}
       </>
     )
   }
@@ -140,10 +140,15 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
 }
 
 const mapStateToProps = (state: any): any => ({
-  homeFetch: state.home.fetch,
-  homeAction: state.home.action,
-  homeRes: state.home.res,
-  homeErr: state.home.err,
+  homeFetch: state.home.main.fetch,
+  homeAction: state.home.main.action,
+  homeRes: state.home.main.res,
+  homeErr: state.home.main.err,
+  
+  profileFetch: state.home.profile.fetch,
+  profileAction: state.home.profile.action,
+  profileRes: state.home.profile.res,
+  profileErr: state.home.profile.err,
 })
 const mapDispacthToProps = (dispatch: any): any => ({
   upcommingClassFetch: (role?: string) => dispatch(upcommingClassFetch(role)),

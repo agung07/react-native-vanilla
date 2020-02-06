@@ -15,6 +15,18 @@ const AppLecturer = createBottomTabNavigator(
     Class: {
       screen: RouterConfig.ClassLecturerStackNav,
       ...RouterConfig.ClassNavConfig
+    },
+    Schedule: {
+      screen: RouterConfig.ScheduleLecturerStackNav,
+      ...RouterConfig.ScheduleNavConfig
+    },
+    Notification: {
+      screen: RouterConfig.NotificationLecturerStackNav,
+      ...RouterConfig.NotificationNavConfig,
+    },
+    Other: {
+      screen: RouterConfig.OtherLecturerStackNav,
+      ...RouterConfig.OtherNavConfig
     }
   },
   RouterConfig.mainModulesSettings
@@ -29,14 +41,34 @@ const AppStudent = createBottomTabNavigator(
     Class: {
       screen: RouterConfig.ClassStudentStackNav,
       ...RouterConfig.ClassNavConfig
+    },
+    Schedule: {
+      screen: RouterConfig.ScheduleStudentStackNav,
+      ...RouterConfig.ScheduleNavConfig
+    },
+    Notification: {
+      screen: RouterConfig.NotificationStudentStackNav,
+      ...RouterConfig.NotificationNavConfig,
+    },
+    Other: {
+      screen: RouterConfig.OtherStudentStackNav,
+      ...RouterConfig.OtherNavConfig
     }
   },
   RouterConfig.mainModulesSettings
 )
+const Auth = createStackNavigator(RouterConfig.auth, { initialRouteName: 'Login', headerMode: 'none'});
 
-const Auth = createStackNavigator(RouterConfig.auth, RouterConfig.settings);
+export const RouterLecturer = createAppContainer(
+  createSwitchNavigator(
+    {
+      Auth: Auth,
+      App: AppLecturer
+   }
+  )
+);
 
-export default createAppContainer(
+export const RouterStudent = createAppContainer(
   createSwitchNavigator(
     {
       Auth: Auth,

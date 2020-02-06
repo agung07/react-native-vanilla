@@ -36,6 +36,7 @@ import {
   Icon,
 } from '../components/list/index';
 import LinearGradient from 'react-native-linear-gradient';
+import StylesGlobal from '../../../styles';
 
 const initialState: IListClassState = {
   refreshing: false,
@@ -188,7 +189,7 @@ class UpcomingClass extends React.Component<IListClassProps, IListClassState> {
     return (
       <View style={StyleClass.classTopContainer}>
         <ScrollView contentContainerStyle={StyleClass.classContainer}>
-          <LinearGradient colors={['#7b2183', '#3e1841']} style={StyleClass.linearGradient}>
+          <LinearGradient colors={['#7b2183', '#3e1841']} style={[StylesGlobal.Main.statusBar, StyleClass.linearGradient]}>
             <View style={StyleClass.headerClass}>
               <Header
                 role={'student'}
