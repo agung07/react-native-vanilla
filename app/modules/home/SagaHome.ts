@@ -6,70 +6,58 @@ import {
   select
 } from 'redux-saga/effects';
 import {
-  CLASSFETCH,
   UPCOMINGCLASSFETCH,
   PROFILEFETCH
 } from './ConfigHome';
 import {
-  classSuccess,
-  classFailed,
   upcommingClassSuccess,
   upcommingClassFailed,
-  profileSuccess
+  profileSuccess,
+  profileFailed
 } from './ActionHome';
-import { APISINTONG, APIHENDRA, BASE_URL } from '../../config/Api';
+import { APISINTONG, APIHENDRA, BASE_URL, PROFILE_SERVICE } from '../../config/Api';
 import { request } from '../../utilities/StoreApi';
 
 const getTokenState = (state) => state.auth.res;
 
-function* workerSagaClassFetch() {
-  try {
-    const response = yield call(request, `${APISINTONG}/classes`, 'GET');
-    if (response.success) {
-      yield put.resolve(classSuccess(response));
-    } else {
-      yield put.resolve(classFailed(response));
-    }
-  } catch (error) {
-    yield put.resolve(classFailed(error.message));
-  }
-}
-
 function* workerSagaupcomingClassFetch({ role, type }: any) {
   console.log("workerSagaupcomingClassFetch has called");
   try {
-    const response = yield call(request, `${APIHENDRA}/course/class/upcomingclass/${role}`, 'GET');
-    console.log("response: ", response)
-    yield put(upcommingClassSuccess(response));
-
+    const Token = yield select(getTokenState);
+    
+    const response = yield call(request, `${APIHENDRA}/course/class/upcomingclass/${role}`, 'GET', null, Token);
+    console.log("response upcomingclass: ", response)
+    if(response.status === 200){
+      console.log(upcommingClassSuccess);
+      yield put(upcommingClassSuccess(response.data));
+    }else{
+      throw new Error(response.data)
+    }
   } catch (error) {
     yield put.resolve(upcommingClassFailed(error.message));
   }
 }
 
 function* workerSagaProfileFetch(): any {
-  console.log("workerSagaupProfileFetch");
   try {
     const Token = yield select(getTokenState);
-    
-    // const response = yield call(request, `${BASE_URL}/Profile`, 'GET', null, Token);
-    // console.log("response: ", response)
-
-    const dummy = {
-      userId: '2sKkmsd8239',
-      fullName: 'Agung Perdana Gumelar',
-      userPictureUrl: 'https://placeimg.com/640/480/people',
-      roleTypes: ["student", "instructor"],
+    const response = yield call(request, `${PROFILE_SERVICE}/Profile`, 'GET', null, Token);
+    const res = {
+      ...response.data,
+      role: response.data.roleTypes[0]
     }
-    yield put.resolve(profileSuccess(dummy));
+    if(response.status === 200) {
+      yield put.resolve(profileSuccess(res));
+    } else {
+      throw new Error(response.data)
+    }
 
-  } catch (err) {
-
+  } catch (error) {
+    yield put.resolve(profileFailed(error.message));
   }
 }
 
 export const watcherHome = [
-  takeLatest(CLASSFETCH, workerSagaClassFetch),
   takeEvery(UPCOMINGCLASSFETCH, workerSagaupcomingClassFetch),
   takeEvery(PROFILEFETCH, workerSagaProfileFetch),
 ];

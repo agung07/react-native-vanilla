@@ -24,6 +24,7 @@ class ViewContainer extends Component<any, any> {
 
   constructor(props: any) {
     super(props)
+    this.Router = this.Router.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -68,14 +69,12 @@ class ViewContainer extends Component<any, any> {
     }
   }
 
-  Router = (): any => {
-  }
+  Router = (): JSX.Element => {
+    const profile = this.props.profileRes || {};
 
-  render() {
-    return (
-      <View style={Styles.Main.container}>
-        <StatusBar translucent={true} barStyle='light-content' backgroundColor={'transparent'} />
-        <RouterStudent
+    if(profile.role === 'Instructor') {
+      return (
+        <RouterLecturer
           ref={(ref) => {
             NavigationService.setTopLevelNavigator(ref);
           }}
@@ -89,6 +88,33 @@ class ViewContainer extends Component<any, any> {
             }
           }}
         />
+      )
+    }
+
+    return (
+      <RouterStudent
+        ref={(ref) => {
+          NavigationService.setTopLevelNavigator(ref);
+        }}
+        onNavigationStateChange={(prevState, currentState, action) => {
+          if (action.type === 'Navigation/NAVIGATE' || action.type === 'Navigation/BACK') {
+            this.props.setScreen({
+              action: action.type,
+              prevScreen: NavigationService.getRouteName(prevState),
+              thisScreen: NavigationService.getRouteName(currentState),
+            });
+          }
+        }}
+      />
+    )
+    
+  }
+
+  render() {
+    return (
+      <View style={Styles.Main.container}>
+        <StatusBar translucent={true} barStyle='light-content' backgroundColor={'transparent'} />
+        {this.Router()}
       </View>
     );
   }
@@ -98,6 +124,7 @@ const mapStateToProps = (state: any) => ({
   action: state.bootstrap.action,
   prevScreen: state.bootstrap.prevScreen,
   thisScreen: state.bootstrap.thisScreen,
+  profileRes: state.home.profile.res,
 });
 const mapDispatchToProps = (dispatch: any) => ({
   setScreen: value => dispatch(setScreen(value)),

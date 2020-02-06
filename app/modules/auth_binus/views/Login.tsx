@@ -75,7 +75,7 @@ class Login extends Component<ILoginProps, ILoginState> {
 
   onSubmit(): void {
     const validate = this.validate();
-    if(!validate) return ;
+    if(!validate.success) return ;
 
     this.setState({ showLoadingModal: true })
     const { loginRequest } = this.props;
@@ -110,12 +110,12 @@ class Login extends Component<ILoginProps, ILoginState> {
 
   loginCallback(value?: any): void {
     this.setState({ showLoadingModal: false })
-    if(value) {
+    if(value.success) {
       this.props.navigation.navigate('App');
     } else {
       Alert.alert(
         'Login Failed',
-        'Username or password did not match'
+        value.data
       );
     }
   }

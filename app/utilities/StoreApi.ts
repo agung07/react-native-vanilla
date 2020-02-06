@@ -25,18 +25,15 @@ export const post = (operation: string, data: any): any => axios({
 export const get = (operation: string, data: any): any => axios.get(`${APIMO}${operation}?${qs.stringify(data)}`);
 
 export const request = async (operation: string, method: string, data?: any, token?: string, contentType?: string = 'application/json'): any => {
-  const Token = await getToken();  
   return axios({
     method: method,
-    url: `${operation}?code=sendaljepitAndroid`,
+    url: `${operation}`,
     data,
     headers: {
       'content-type': contentType,
       'Authorization': `Bearer ${token}` 
     }
   })
-  .then(res => res.data)
-  .catch(err => {
-    return err;
-  })
+  .then(res => res)
+  .catch(err => err.response)
 }

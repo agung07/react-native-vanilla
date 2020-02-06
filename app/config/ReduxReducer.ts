@@ -4,7 +4,6 @@
 
 import Bootstrap from '../bootstrap/container';
 import { ReducerAuth } from '../modules/auth_binus/ReducerAuth';
-// import { ReducerHome } from '../modules/home/ReducerHome';
 import { ReducerClass } from '../modules/courses/ReducerClass';
 import ReducerHome from '../modules/home/reducers';
 

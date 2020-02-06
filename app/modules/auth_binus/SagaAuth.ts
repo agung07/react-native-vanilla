@@ -15,22 +15,29 @@ import {
 } from './ActionAuth';
 import  { IWorkerSagaLogin } from './interfaces/sagas';
 import {  BASE_URL } from '../../config/Api';
-import { takeEvery } from 'redux-saga';
 
 
 function* workerSagaLogin({type, send, callback}: IWorkerSagaLogin) {
+  let cbValue = {
+    data: null,
+    success: true
+  }
   try {
     const response = yield call(request, `${BASE_URL}/SignInByEmail`, 'POST', send, 'application/json');
-
-    if(typeof response === 'string') {
-        yield put.resolve(loginSuccess(response));
-        callback(response);
+    cbValue.data = response.data;
+    if(response.status === 200) {
+        yield put.resolve(loginSuccess(response.data));
+        callback(cbValue);
     } else {
-      throw new Error('Login Failed')
+      throw new Error(response.data)
     }
     
   } catch (error) {
-    callback(false);
+    cbValue = {
+      data: error.message,
+      success: false
+    }
+    callback(cbValue);
     yield put.resolve(loginFailed(error.message));
   }
 }

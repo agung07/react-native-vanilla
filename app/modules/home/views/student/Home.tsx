@@ -49,7 +49,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
   componentDidMount() {
     const { upcommingClassFetch, profileFetch } = this.props;
     profileFetch();
-    // if(typeof upcommingClassFetch == 'function') upcommingClassFetch('student')
+    if(typeof upcommingClassFetch == 'function') upcommingClassFetch('student')
   }
 
   static getDerivedStateFromProps(props, state){
@@ -65,7 +65,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
   }
 
   onRefresh = async (): Promise<void> => {
-    // this.fetchUpcomingClass()
+    this.fetchUpcomingClass()
   }
 
   fetchUpcomingClass = async (): Promise<void> => {
@@ -82,7 +82,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
               <Header 
                 isHome
                 role={'student'}
-                pictureUrl={'https://placeimg.com/640/480/people'}
+                pictureUrl={profile.userPictureUrl || 'https://placeimg.com/640/480/people'}
               />
               <View style={StyleHome.headerTextWrapper}>
                 <Text style={StyleHome.headerTextGreeting}>{_('Good Morning')},</Text>
@@ -96,26 +96,27 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
     const { upcommingClass } = this.state;
     return (
       <>
-        {/* {
+        {
           (() => {
             if(Object.keys(upcommingClass || {}).length > 0) {
               return  <UpcomingClass.Student 
-                        id={upcommingClass.id}
-                        courseName={upcommingClass.courseName}
-                        classCampus={upcommingClass.classCampus}
-                        classRoom={upcommingClass.classRoom}
-                        classCode={upcommingClass.classCode}
-                        lecturers={upcommingClass.lecturers}
-                        dateStart={upcommingClass.dateStart}
-                        dateEnd={upcommingClass.dateEnd}
-                        resources={upcommingClass.resources}
-                        sessionProgress={upcommingClass.sessionProgress}
+                        {...upcommingClass}
+                        // id={upcommingClass.id}
+                        // courseName={upcommingClass.courseName}
+                        // classCampus={upcommingClass.classCampus}
+                        // classRoom={upcommingClass.classRoom}
+                        // classCode={upcommingClass.classCode}
+                        // lecturers={upcommingClass.lecturers}
+                        // dateStart={upcommingClass.dateStart}
+                        // dateEnd={upcommingClass.dateEnd}
+                        // resources={upcommingClass.resources}
+                        // sessionProgress={upcommingClass.sessionProgress}
                         fetchData={this.fetchUpcomingClass}
                         onPress={() => {alert("onPress")}}
                       />
             }
           })()
-        } */}
+        }
       </>
     )
   }
