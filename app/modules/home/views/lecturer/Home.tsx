@@ -23,6 +23,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../../../components/header';
 import ButtonNavigationGroup from '../../../../components/button_navigation_group';
 import _ from '../../../../lang';
+import StylesGlobal from '../../../../styles';
 
 const initialState: IHomeLecturerState = {
   upcommingClass: null,
@@ -77,15 +78,16 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
   }
 
   TemplateHeader = (): JSX.Element => {
+    const profileRes = this.props.profileRes || {};
     return  <View style={StyleHome.headerWrapper}>
               <Header 
                 isHome
                 role={'lecturer'}
-                pictureUrl={'https://placeimg.com/640/480/people'}
+                pictureUrl={profileRes.userPictureUrl || 'https://placeimg.com/640/480/people'}
               />
               <View style={StyleHome.headerTextWrapper}>
                 <Text style={StyleHome.headerTextGreeting}>{_('Good Morning')},</Text>
-                <Text style={StyleHome.headerTextName}>{'No Name'}</Text>
+                <Text style={StyleHome.headerTextName}>{profileRes.fullName || 'No Name'}</Text>
               </View>
               <ButtonNavigationGroup />
             </View>
@@ -95,25 +97,19 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
     const {upcommingClass} = this.state;
     return (
       <>
-        {/* {
+        {
           (() => {
             if(Object.keys(upcommingClass || {}).length > 0) {
               return  (
                 <UpcomingClass.Lecturer 
-                  id={upcommingClass.id}
-                  classCode={upcommingClass.classCode}
-                  courseName={upcommingClass.courseName}
-                  classCampus={upcommingClass.classCampus}
-                  classRoom={upcommingClass.classCampus}
-                  dateStart={upcommingClass.dateStart}
-                  dateEnd={upcommingClass.dateEnd}
+                  {...upcommingClass}
                   sessionProgress={upcommingClass.sessionProgress}
                   onPress={this.onUpcomingClassPress}
                 />
               )
             }
           })()
-        } */}
+        }
       </>
     )
   }
@@ -129,7 +125,7 @@ class LecturerHome extends Component<IHomeLecturerProps, IHomeLecturerState> {
       >
         <LinearGradient 
           colors={['#1C9AD7', '#7F3485']} 
-          style={StyleHome.linierGradient}
+          style={[StylesGlobal.Main.statusBar, StyleHome.linierGradient]}
         >
           {this.TemplateHeader()}
           {this.TemplateBody()}

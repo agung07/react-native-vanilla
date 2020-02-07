@@ -12,8 +12,6 @@ export default StyleSheet.create({
     padding: 15,
   },
   classInfo: {
-    // borderBottomColor: Colors.gray,
-    // borderBottomWidth: 0.5,
     paddingBottom: 10
   },
   headerWrapper: {
@@ -21,6 +19,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 9
   },
   duration: {
     flexDirection: 'row',
@@ -41,8 +40,11 @@ export default StyleSheet.create({
   },
   className: {
     marginTop: 10,
-    color: Colors.black,
-    fontSize:20
+    color: '#333333',
+    fontSize:20,
+  },
+  lecturerContainer: {
+    paddingVertical: 5,
   },
   lecturerInfoWrapper: {
     width: '100%',
@@ -56,27 +58,28 @@ export default StyleSheet.create({
     borderRadius: 35
   },
   lecturerName: {
-    color: Colors.black,
-    fontSize: 17,
+    color: '#333333',
+    fontSize: 15,
     marginLeft: 5
   },
   BodyLecturer: {
-    borderTopColor: Colors.gray,
+    borderTopColor: '#f2f2f2',
     borderTopWidth: 0.5,
-    borderBottomColor: Colors.gray,
+    borderBottomColor: '#f2f2f2',
     borderBottomWidth: 0.5,
     paddingVertical: 15
   },
   BodyStudent: {
-    borderTopColor: Colors.gray,
+    borderTopColor: '#f2f2f2',
     borderTopWidth: 0.5,
-    paddingVertical: 15,
+    paddingTop: 15,
+    paddingBottom: 2
 
   },
   LabelWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 3
+    paddingVertical: 8.7,
   },
   Icon: {
     height: 15,
@@ -103,27 +106,24 @@ export default StyleSheet.create({
   },
   todoHeaderWrapper: {
     borderBottomColor: Colors.white,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 0.3,
+    paddingVertical: 8
   },
   todoHeaderText: {
     color: Colors.white,
     marginBottom: 10,
-    fontSize: 15,
+    fontSize: 14.5,
   },
   arrowImageWrapper: {
-    width: 35,
-    height: 35,
-    borderRadius: 35,
-    backgroundColor: Colors.white,
     position: 'absolute',
     right: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: -17
+    bottom: -20
   }, 
   arrowImage: {
-    height: 20,
-    width: 20
+    height: 15,
+    width: 15
   },
   taskItemWrapper: {
     marginTop: 15,
@@ -133,24 +133,23 @@ export default StyleSheet.create({
   },
   taskItemText: {
     color: Colors.white,
-    fontSize: 15,
   },
   taskItemTextBold: {
     color: Colors.white,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
     marginRight: 8
   },
   dot: {
     backgroundColor: Colors.white,
-    height: 10,
-    width: 10,
-    borderRadius: 10,
-    marginHorizontal: 15,
+    height: 4,
+    width: 4,
+    borderRadius: 4,
+    marginHorizontal: 12,
   },
   classProgressBarWrapper: {
     width: '100%',
-    paddingTop: 10
+    paddingTop: 17
   },
   classProgressLabelWrapper: {
     flexDirection: 'row',

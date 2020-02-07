@@ -53,7 +53,7 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
   }
 
   static getDerivedStateFromProps(props, state){
-    if(props.homeAction === UPCOMINGCLASSSUCCESS || props.profileAction === PROFILESUCCESS) {
+    if(props.homeAction === UPCOMINGCLASSSUCCESS || props.homeAction === UPCOMINGCLASSFETCH || props.profileAction === PROFILESUCCESS) {
       return {
         ...state,
         refreshing: false,
@@ -77,12 +77,12 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
   }
 
   TemplateHeader = (): JSX.Element => {
-    const profile = this.state.profile || {};
+    const profile :any = this.state.profile || {};
     return  <View style={StyleHome.headerWrapper}>
               <Header 
                 isHome
                 role={'student'}
-                pictureUrl={profile.userPictureUrl || 'https://placeimg.com/640/480/people'}
+                pictureUrl={profile.userPxictureUrl || 'https://placeimg.com/640/480/people'}
               />
               <View style={StyleHome.headerTextWrapper}>
                 <Text style={StyleHome.headerTextGreeting}>{_('Good Morning')},</Text>
@@ -101,16 +101,6 @@ class StudentHome extends Component<IHomeStudentProps, IHomeStudentState> {
             if(Object.keys(upcommingClass || {}).length > 0) {
               return  <UpcomingClass.Student 
                         {...upcommingClass}
-                        // id={upcommingClass.id}
-                        // courseName={upcommingClass.courseName}
-                        // classCampus={upcommingClass.classCampus}
-                        // classRoom={upcommingClass.classRoom}
-                        // classCode={upcommingClass.classCode}
-                        // lecturers={upcommingClass.lecturers}
-                        // dateStart={upcommingClass.dateStart}
-                        // dateEnd={upcommingClass.dateEnd}
-                        // resources={upcommingClass.resources}
-                        // sessionProgress={upcommingClass.sessionProgress}
                         fetchData={this.fetchUpcomingClass}
                         onPress={() => {alert("onPress")}}
                       />

@@ -16,7 +16,6 @@ interface ICountDownTimer {
 }
 
 export default function(date_start: any, date_end: any): ICountDownTimer {
-
   // Find the distance between now and the count down date
   var distance = date_end - date_start;
     
@@ -29,7 +28,6 @@ export default function(date_start: any, date_end: any): ICountDownTimer {
   hours += dayInHours;
   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
   return {
       days: days,
       hours: hours,

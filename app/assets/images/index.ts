@@ -5,6 +5,8 @@ import HomeIcon from './home';
 import BinusMayaLogo from './logo-binusmaya';
 import OtherIcon from './other';
 import NotificationIcon from './notification';
+import ClockIcon from './clock';
+import NextCircularIcon from './next-circular';
 
 export {
   PinMapCircularIcon,
@@ -13,5 +15,7 @@ export {
   HomeIcon,
   GraduationHatIcon,
   NotificationIcon,
-  OtherIcon
+  OtherIcon,
+  ClockIcon,
+  NextCircularIcon,
 }

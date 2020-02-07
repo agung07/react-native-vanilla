@@ -9,11 +9,14 @@ import { IUpcomingClassLecturerProps } from '../../interfaces/components/upcommi
 import { Grid, BarChart, XAxis } from 'react-native-svg-charts';
 import { titleCase } from '../../../../utilities/helpers';
 import { Text as TextSvg } from 'react-native-svg';
-import watchGrayIcon from '../../../../assets/images/watch-gray.png';
-import markerGrayIcon from '../../../../assets/images/marker-gray.png';
+import {
+  PinMapCircularIcon,
+  ClockCircularIcon,
+} from '../../../../assets/images';
 import Styles from './StyleUpCommingClass';
 import GradientLabel from '../../../../components/label_gradient';
 import _ from '../../../../lang';
+import Moment from 'moment';
 
 class UpCommingClass extends React.Component<IUpcomingClassLecturerProps, any> {
   constructor(props: IUpcomingClassLecturerProps) {
@@ -39,47 +42,42 @@ class UpCommingClass extends React.Component<IUpcomingClassLecturerProps, any> {
   }
 
   TemplateBody = (): JSX.Element => {
-    let { classRoom, classCampus, dateStart, dateEnd } = this.props;  
+    let { classRoomNumber, classCampusName, dateStart, dateEnd } = this.props;  
     return  (
       <>
       <View style={Styles.BodyLecturer}>
         <View style={Styles.LabelWrapper}>
-          <Image
-            source={markerGrayIcon}
-            style={Styles.Icon}
-          />
+          <PinMapCircularIcon />
           <Text style={Styles.Label}>
-            {classRoom} - {classCampus}
+            {classRoomNumber} - {classCampusName}
           </Text>
         </View>
         <View style={Styles.LabelWrapper}>
-          <Image
-            source={watchGrayIcon}
-            style={Styles.Icon}
-          />
+          <ClockCircularIcon />
           <Text style={Styles.Label}>
-            {`${new Date(dateStart).getHours()}:${new Date(dateStart).getMinutes()}`} - 
-            {` ${new Date(dateEnd).getHours()}:${new Date(dateEnd).getMinutes()}`} 
+            {Moment(dateStart).format('HH:mm')} - 
+            {Moment(dateEnd).format('HH:mm')} 
           </Text>
         </View> 
       </View>
+      {/* {this.TemplateChart()} */}
       </>
     )
   }
 
-  //fungsi belum digunakana karena feature belum ada di backlog
   // TemplateChart= () => {
-  //   const sessionProgress = this.props.sessionProgress || {};
-  //   const data = Object.values(sessionProgress);
-  //   const labels = Object.keys(sessionProgress);  
 
-  //   const CUT_OFF = 20
+  //   const sessionProgress = this.props.sessionProgress || {};
+  //   let data = Object.values(sessionProgress);
+  //   const labels = Object.keys(sessionProgress); 
+  //   const CUT_OFF = 20;
+
   //   const Labels = ({ x, y, bandwidth, data }?: any): JSX.Element => (
   //       data.map((value, index) => (
   //           <TextSvg
   //               key={ index }
   //               x={ x(index) + (bandwidth / 2) }
-  //               y={ value < CUT_OFF ? y(value) - 10 : y(value) + 15 }
+  //               y={ value < CUT_OFF ? y(value): y(value) + 15 }
   //               fontSize={ 14 }
   //               fill={ value >= CUT_OFF ? 'white' : 'black' }
   //               alignmentBaseline={ 'middle' }

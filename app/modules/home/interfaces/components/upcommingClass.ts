@@ -9,8 +9,8 @@ export interface IUpcomingClassLecturerProps {
   id: number | string;
   classCode: string;
   courseName: string;
-  classRoom: string;
-  classCampus: string;
+  classRoomNumber: string;
+  classCampusName: string;
   dateStart: Date;
   dateEnd: Date;
   sessionProgress?: Object;
@@ -21,8 +21,8 @@ export interface IUpcomingClassStudentProps {
   id: string;
   classCode: string;
   courseName: string;
-  classCampus: string;
-  classRoom: string;
+  classCampusName: string;
+  classRoomNumber: string;
   lecturers: Array<Object>;
   dateStart: Date | string;
   dateEnd: Date | string;
@@ -30,4 +30,10 @@ export interface IUpcomingClassStudentProps {
   sessionProgress: number | string;
   onPress?: Function;
   fetchData?: Function;
+}
+
+export interface IResourcesContainer {
+  jumlah: number;
+  type: string;
+  duration: number;
 }

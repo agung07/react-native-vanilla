@@ -11,6 +11,7 @@ import { RouterStudent, RouterLecturer } from '../Router';
 import RouterConfig from '../../config/Router';
 import NavigationService from '../NavigationService';
 import { setScreen } from './ActionContainer';
+import { SWITCHUSERROLE } from '../../modules/other/ConfigOther'
 import _ from '../../lang';
 
 import Styles from '../../styles';
@@ -20,6 +21,7 @@ class ViewContainer extends Component<any, any> {
     action: this.props.action,
     prevScreen: this.props.prevScreen,
     thisScreen: this.props.thisScreen,
+    role: ''
   }
 
   constructor(props: any) {
@@ -28,11 +30,13 @@ class ViewContainer extends Component<any, any> {
   }
 
   static getDerivedStateFromProps(nextProps) {
-    if (nextProps.action === 'Navigation/NAVIGATE' || nextProps.action === 'Navigation/BACK') {
+    let profileRes = nextProps.profileRes || {};
+    if (nextProps.action === 'Navigation/NAVIGATE' || nextProps.action === 'Navigation/BACK' || nextProps.profileAction === SWITCHUSERROLE) {
       return {
         action: nextProps.action,
         prevScreen: nextProps.prevScreen,
         thisScreen: nextProps.thisScreen,
+        role: profileRes.role
       };
     }
 
@@ -71,10 +75,26 @@ class ViewContainer extends Component<any, any> {
 
   Router = (): JSX.Element => {
     const profile = this.props.profileRes || {};
-
     if(profile.role === 'Instructor') {
       return (
         <RouterLecturer
+          ref={(ref) => {
+            NavigationService.setTopLevelNavigator(ref);
+          }}
+          onNavigationStateChange={(prevState, currentState, action) => {
+            if (action.type === 'Navigation/NAVIGATE' || action.type === 'Navigation/BACK') {
+              this.props.setScreen({
+                action: action.type,
+                prevScreen: NavigationService.getRouteName(prevState),
+                thisScreen: NavigationService.getRouteName(currentState),
+              });
+            }
+          }}
+        />
+      )
+    } else if(profile.role === 'Student') {
+      return (
+        <RouterStudent
           ref={(ref) => {
             NavigationService.setTopLevelNavigator(ref);
           }}
@@ -125,6 +145,7 @@ const mapStateToProps = (state: any) => ({
   prevScreen: state.bootstrap.prevScreen,
   thisScreen: state.bootstrap.thisScreen,
   profileRes: state.home.profile.res,
+  profileAction: state.home.profile.action
 });
 const mapDispatchToProps = (dispatch: any) => ({
   setScreen: value => dispatch(setScreen(value)),

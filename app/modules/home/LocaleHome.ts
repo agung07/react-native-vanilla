@@ -9,7 +9,7 @@ export default [
   },
   {
     id: 'Kemajuan kursus',
-    en: 'Class progress',
+    en: 'Course progress',
   },
   {
     id: 'Kelas Mendatang',

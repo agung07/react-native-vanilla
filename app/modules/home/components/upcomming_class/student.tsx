@@ -2,23 +2,23 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   TouchableOpacity
 } from 'react-native';
 import { IUpcomingClassStudentProps } from '../../interfaces/components/upcommingClass';
 import {
   PinMapCircularIcon,
-  ClockCircularIcon
+  ClockCircularIcon,
+  ClockIcon,
+  NextCircularIcon,
 } from '../../../../assets/images';
+import Moment from 'moment';
 import _ from '../../../../lang';
 import LinearGradient from 'react-native-linear-gradient';
 import Styles from './StyleUpCommingClass';
 import countDownTimer from '../../../../utilities/helpers/countDownTimer';
 import GradientLabel from '../../../../components/label_gradient';
 import Avatar from '../../../../components/avatar';
-import watchGrayIcon from '../../../../assets/images/watch-gray.png';
-import markerGrayIcon from '../../../../assets/images/marker-gray.png';
-import rightArrowGrayIcon from '../../../../assets/images/right-arrow-gray.png';
+import ResourcesContainer from './resourcesContainer';
 
 const ProgressBar = ({styleBackground, styleFill}: any): JSX.Element => {
   return  <View style={[Styles.progressBar, styleBackground]}>
@@ -47,10 +47,10 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
 
   componentDidMount = async () => {
     const { dateStart } = this.props;
-    var date_start = new Date();
-    var date_end = new Date(dateStart);
-    const duration = countDownTimer(date_start, date_end);
+    var date_start = new Date().getTime();
+    var date_end = Moment(dateStart);
 
+    const duration = await countDownTimer(date_start, date_end);
     await this.setState({
       ...this.state,
       duration: {
@@ -80,15 +80,16 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
     // maka durasi akan count down
     // jika tidak maka akan mengambil data ke BE
     if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-      if(typeof fetchData == 'function') {
-        // window.clearTImeout(this.timer); 
+      if(typeof fetchData == 'function') {  
         fetchData();
       }
       return;
     }
-    const date_start = new Date();
-    const date_end = new Date(dateStart);
-    const duration = countDownTimer(date_start, date_end);
+    const date_start = new Date().getTime();
+    const date_end = Moment(dateStart);
+    
+    const duration = await countDownTimer(date_start, date_end);
+    
     this.setState({
         ...this.state,
         duration: {
@@ -118,10 +119,9 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
     } = this.props;
     const { days, hours, minutes, seconds } = this.state.duration;
     let duration = seconds + 's';
-
-    if(minutes) duration = minutes + 'm';
-    if(hours) duration = `${hours}:${minutes}m`;
-    if(days) duration = `${days}:${hours}h`;
+    if(minutes) duration = `${minutes > 9 ? minutes : `0${minutes}`} m`;
+    if(hours) duration = `${hours}h:${minutes > 9 ? minutes : `0${minutes}`}m`;
+    if(days) duration = `${days}d:${hours > 9 ? hours : `0${hours}` }h`;
 
     return  (
       <View style={Styles.classInfo}>
@@ -131,7 +131,7 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
             colors={['#3023AE', '#C86DD7']}
             styleContainer={{
               paddingHorizontal: 18,
-              paddingVertical: 18
+              paddingVertical: 20
             }}
             styleText={{
               fontWeight: 'bold',
@@ -139,36 +139,34 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
             }}
           />
           <View style={Styles.duration}>
-            <Image 
-              source={watchGrayIcon}
-              style={Styles.watchIcon}
-            />
-            <PinMapCircularIcon />
+            <ClockIcon />
             <Text style={Styles.durationLabel}>{duration}</Text>
           </View>
         </View>
         <Text style={Styles.classId}>{classCode}</Text>
         <Text style={Styles.className}>{courseName}</Text>
+        <View style={Styles.lecturerContainer}>
         {
           (lecturers || []).length > 0 &&
           lecturers.map((lecturer: any) => (
             <View style={Styles.lecturerInfoWrapper} key={lecturer.id}>
               <Avatar 
-                source={lecturer.lecturePictureUrl}
-                size={40}
+                source={lecturer.pictureUrl}
+                size={37}
               />
-              <Text style={Styles.lecturerName}>{lecturer.lectureName}</Text>
+              <Text style={Styles.lecturerName}>{lecturer.name}</Text>
             </View>
           ))
         }
+        </View>
       </View>
     )
   }
 
   TemplateBody = (): JSX.Element => { 
     const {
-      classRoom,
-      classCampus,
+      classRoomNumber,
+      classCampusName,
       dateStart,
       dateEnd,
       sessionProgress
@@ -176,33 +174,27 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
     return  (
       <View style={Styles.BodyStudent}>
         <View style={Styles.LabelWrapper}>
-          <Image
-            source={markerGrayIcon}
-            style={Styles.Icon}
-          />
+          <PinMapCircularIcon />
           <Text style={Styles.Label}>
-            {classRoom} - {classCampus}
+            {classRoomNumber} - {classCampusName}
           </Text>
         </View>
         <View style={Styles.LabelWrapper}>
-          <Image
-            source={watchGrayIcon}
-            style={Styles.Icon}
-          />
+          <ClockCircularIcon />
           <Text style={Styles.Label}>
-            {`${new Date(dateStart).getHours()}:${new Date(dateStart).getMinutes()}`} - 
-            {` ${new Date(dateEnd).getHours()}:${new Date(dateEnd).getMinutes()}`} 
+            {Moment(dateStart).format('HH:mm')} - 
+            {Moment(dateEnd).format('HH:mm')} 
           </Text>
         </View> 
         {this.TemplateTask()}
         <View style={Styles.classProgressBarWrapper}>
           <View style={Styles.classProgressLabelWrapper}>
-            <Text style={Styles.classProgressLabel}>{_('Class Progress')}</Text>
-            <Text style={Styles.classProgressLabel}>{sessionProgress}%</Text>
+            <Text style={Styles.classProgressLabel}>{_('Course Progress')}</Text>
+            <Text style={Styles.classProgressLabel}>{typeof sessionProgress !== 'object' ? sessionProgress : 0}%</Text>
           </View>
           <ProgressBar 
             styleFill={{
-              width: `${sessionProgress || 0}%`
+              width: `${typeof sessionProgress !== 'object' ? sessionProgress : 0}%`
             }}
           />
         </View>
@@ -221,31 +213,13 @@ class UpCommingClass extends React.Component<IUpcomingClassStudentProps, any> {
           <View style={Styles.todoHeaderWrapper}>
             <Text style={Styles.todoHeaderText}>{_('Things to do in this week')}:</Text>
           </View>
-          <TouchableOpacity onPress={onPress} style={Styles.arrowImageWrapper}>
-            <Image 
-              source={rightArrowGrayIcon}
-              style={Styles.arrowImage}
-            />
+          <TouchableOpacity onPress={() => {onPress}} style={Styles.arrowImageWrapper}>
+            <NextCircularIcon />
           </TouchableOpacity>
         </View>
         {
           (resources || []).length > 0 &&
-          (resources || []).map((obj: any, index) => (
-            <View key={index} style={Styles.taskItemWrapper}>
-              <Text style={Styles.taskItemTextBold}>
-                {obj.jumlah}
-              </Text>
-              <Text style={Styles.taskItemText}>
-                {obj.category}
-              </Text>
-              <View 
-                style={Styles.dot}
-              />
-              <Text style={Styles.taskItemText}>
-                {obj.duration}
-              </Text>
-            </View>
-          ))
+          (resources || []).map((obj: any, index) =>  <ResourcesContainer {...obj} key={index} /> )
         }
     </LinearGradient>
     )

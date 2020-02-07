@@ -14,6 +14,10 @@ export interface IHomeLecturerProps {
   homeAction: string;
   homeRes: any;
   homeErr: any;
+  profileFetch: boolean;
+  profileAction: string;
+  profileRes: any;
+  profileErr: any;
   upcommingClassFetch: Function;
 }
 

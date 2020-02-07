@@ -9,6 +9,7 @@ export const APIKEY = '6c9f83e72e2a4910a601c6f2c9f9e635';
 
 export const BASE_URL = 'https://func-identity-dev.azurewebsites.net/api'
 export const PROFILE_SERVICE = 'https://func-profile-dev.azurewebsites.net/api'
+export const COURSE_SERVICE = 'https://func-course-dev.azurewebsites.net/api'
 export const APISINTONG = 'https://sintongtest.azurewebsites.net/api';
 export const APIHENDRA = 'https://binusclassroombuatanhendra.azurewebsites.net/api';
 export const APIMO = 'http://decembertry.azurewebsites.net/';
